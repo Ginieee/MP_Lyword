@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Lyword</string>
+
+    <!--bottom navigation 관련 String-->
+    <string name="bottom_home">Home</string>
+    <string name="bottom_studying">Studying</string>
+    <string name="bottom_today">Today</string>
+    <string name="bottom_mypage">Mypage</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
