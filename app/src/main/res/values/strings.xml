@@ -8,4 +8,14 @@
     <string name="bottom_mypage">Mypage</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Onboard -->
+    <string name="app_intro">Easy to learn foreign languages\nwith my favorite songs!</string>
+    <string name="app_start">Start to Lyword</string>
+    <string name="signup_agree">Terms and Conditions</string>
+    <string name="signup_all_agree">I accept all.</string>
+    <string name="agree_service">Accept the Terms of Service</string>
+    <string name="agree_my_info">Consent to use personal information</string>
+    <string name="clause_notify_text">Collection of personal information\nPurpose: use and provision of goods or services\nItems: Name, ID, password, email\nHolding period: Abolished after 3 months </string>
+    <string name="signup_next">Continue</string>
 </resources>
