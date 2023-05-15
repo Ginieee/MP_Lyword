@@ -47,10 +47,8 @@ class HomeFragment : Fragment() {
     private fun clickListener() {
         binding.homeHeaderSearchTv.setOnClickListener {
             Log.d("HOME_FRG","검색창 클릭")
-            val intent = Intent(requireActivity(), SearchActivity::class.java )
-            startActivity(intent)
-//            val intent = Intent(context, SearchActivity()::class.java)
-//            startActivity(intent)
+            val intent = Intent( context, SearchActivity::class.java)
+            startActivity(intent) //intent 에 명시된 액티비티로 이동
         }
     }
 
