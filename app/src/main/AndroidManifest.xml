@@ -34,6 +34,16 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name=".LyricsActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".LyricsWordDialog"
+            android:exported="true"
+            android:theme="@style/Theme.Transparent">
+        </activity>
         <activity android:name=".SearchActivity"/>
     </application>
 
