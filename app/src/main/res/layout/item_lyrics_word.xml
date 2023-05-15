@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/dialog_lyrics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dialog_box"
+        android:adjustViewBounds="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_lyrics_close_iv"
+        android:layout_width="29dp"
+        android:layout_height="29dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/btn_close"
+        app:layout_constraintTop_toTopOf="@id/dialog_lyrics"
+        app:layout_constraintEnd_toEndOf="@id/dialog_lyrics"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_lyrics_default_iv"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/word_error"
+        app:layout_constraintTop_toTopOf="@id/dialog_lyrics"
+        app:layout_constraintBottom_toBottomOf="@id/dialog_lyrics"
+        app:layout_constraintStart_toStartOf="@id/dialog_lyrics"
+        app:layout_constraintEnd_toEndOf="@id/dialog_lyrics"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_lyrics_back_iv"
+        android:layout_width="10dp"
+        android:layout_height="18dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/arrow_back_gray"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_lyrics_next_iv"
+        android:layout_width="10dp"
+        android:layout_height="18dp"
+        android:layout_margin="15dp"
+        android:src="@drawable/arrow_next_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/dialog_lyrics_cl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/dialog_lyrics"
+        app:layout_constraintBottom_toBottomOf="@id/dialog_lyrics"
+        app:layout_constraintStart_toStartOf="@id/dialog_lyrics"
+        app:layout_constraintEnd_toEndOf="@id/dialog_lyrics"
+        >
+
+        <TextView
+            android:id="@+id/dialog_voc_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Word"
+            android:textColor="#000000"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.1"
+            />
+        <TextView
+            android:id="@+id/dialog_mean_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="mean"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            app:layout_constraintTop_toBottomOf="@id/dialog_voc_tv"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+        <TextView
+            android:id="@+id/dialog_pron_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="pronunciation"
+            android:textColor="#000000"
+            android:textSize="30sp"
+            app:layout_constraintTop_toBottomOf="@id/dialog_mean_tv"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

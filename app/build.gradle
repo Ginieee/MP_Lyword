@@ -53,4 +53,7 @@ dependencies {
 
     //크롤링
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    // CardView
+    implementation 'androidx.cardview:cardview:1.0.0'
 }
