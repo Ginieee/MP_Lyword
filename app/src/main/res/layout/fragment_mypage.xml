@@ -5,13 +5,192 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/mypage_logo"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_main"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
-        android:id="@+id/mypage"
+        android:id="@+id/my_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/mypage"
+        android:layout_marginStart="10dp"
+        android:textSize="23dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toEndOf="@id/mypage_logo"
+        app:layout_constraintTop_toTopOf="@id/mypage_logo"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_logo"/>
+
+    <ImageButton
+        android:id="@+id/mypage_setting"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
+        android:scaleType="fitXY"
+        android:layout_marginEnd="35dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/mypage_logo"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_logo"
+        android:src="@drawable/ic_mypage_setting"
+        android:background="@color/white"/>
+
+    <ImageButton
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@id/mypage_setting"
+        app:layout_constraintTop_toTopOf="@id/mypage_logo"
+        app:layout_constraintBottom_toBottomOf="@id/mypage_logo"
+        android:layout_marginRight="17dp"
+        android:src="@drawable/ic_mypage_edit"
+        android:background="@color/white"/>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mypage_mypg_cl"
+        android:layout_width="match_parent"
+        android:layout_height="252dp"
+        android:background="@drawable/bg_rectangle_mypage"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mypage_logo">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_profile"
+            android:layout_marginTop="26dp"
+            android:layout_marginStart="40dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/mypage_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mypage_nickname"
+            android:layout_marginEnd="50dp"
+            android:layout_marginTop="28dp"
+            android:textSize="23dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/mypage_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mypage_level"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/mainPink"
+            app:layout_constraintStart_toStartOf="@id/mypage_nickname"
+            app:layout_constraintTop_toBottomOf="@id/mypage_nickname"
+            android:layout_marginTop="5dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="@string/mypage_intro"
+            android:layout_marginTop="12dp"
+            app:layout_constraintStart_toStartOf="@id/mypage_level"
+            app:layout_constraintTop_toBottomOf="@id/mypage_level"
+            android:textSize="11dp"/>
+
+
+        <ImageView
+            android:id="@+id/mypage_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_mypage_line"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="18dp"/>
+
+        <TextView
+            android:id="@+id/mypage_ongoing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:text="@string/mypage_ongoing"
+            android:layout_marginBottom="63dp"
+            app:layout_constraintEnd_toEndOf="@id/mypage_line"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/mypage_comp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14dp"
+            android:text="@string/mypage_comp"
+            android:layout_marginBottom="63dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/mypage_line"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mypage_ongoing_num"
+            android:textSize="20dp"
+            android:textColor="@color/mainPink"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/mypage_ongoing"
+            app:layout_constraintStart_toStartOf="@id/mypage_ongoing"
+            app:layout_constraintEnd_toEndOf="@id/mypage_ongoing"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mypage_comp_num"
+            android:textSize="20dp"
+            android:textColor="@color/mainPink"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/mypage_comp"
+            app:layout_constraintStart_toStartOf="@id/mypage_comp"
+            app:layout_constraintEnd_toEndOf="@id/mypage_comp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mypage_menu_tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="mypage"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_marginTop="5dp"
+        app:tabSelectedTextColor="#000000"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorColor="#000000"
+        app:tabRippleColor="#000000"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:layout_constraintTop_toBottomOf="@id/mypage_mypg_cl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mypage_content_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mypage_menu_tb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
