@@ -53,6 +53,7 @@
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/mypage_mypg_cl"
         android:layout_width="match_parent"
         android:layout_height="252dp"
         android:background="@drawable/bg_rectangle_mypage"
@@ -168,5 +169,28 @@
             app:layout_constraintEnd_toEndOf="@id/mypage_comp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/mypage_menu_tb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:tabSelectedTextColor="#000000"
+        app:tabIndicatorFullWidth="true"
+        app:tabIndicatorColor="#000000"
+        app:tabRippleColor="#000000"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        app:layout_constraintTop_toBottomOf="@id/mypage_mypg_cl"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mypage_content_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mypage_menu_tb" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
