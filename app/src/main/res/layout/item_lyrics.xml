@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:layout_margin="5dp">
+
+    <TextView
+        android:id="@+id/item_lyrics_ly_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lyrics"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/item_lyrics_pron_tv"
+        />
+    <TextView
+        android:id="@+id/item_lyrics_pron_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pronun"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_lyrics_ly_tv"
+        app:layout_constraintBottom_toTopOf="@id/item_lyrics_trans_tv"
+        />
+    <TextView
+        android:id="@+id/item_lyrics_trans_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Trans"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/item_lyrics_pron_tv"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/item_lyrics_start_iv"
+        android:layout_width="73dp"
+        android:layout_height="24dp"
+        android:src="@drawable/btn_word"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

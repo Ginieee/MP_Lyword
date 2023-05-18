@@ -3,6 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     namespace 'com.example.lyword'
     compileSdk 33
@@ -13,8 +16,10 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        // Key variables
+        buildConfigField "String", "PAPAGO_ID", properties["papago.clientid"]
+        buildConfigField "String", "PAPAGO_SECRET", properties["papago.clientsecret"]
     }
 
     buildTypes {
@@ -33,6 +38,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        dataBinding true
     }
 }
 
@@ -48,4 +54,7 @@ dependencies {
 
     //크롤링
     implementation 'org.jsoup:jsoup:1.13.1'
+
+    // CardView
+    implementation 'androidx.cardview:cardview:1.0.0'
 }

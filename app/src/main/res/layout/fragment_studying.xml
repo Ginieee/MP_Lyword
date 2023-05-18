@@ -1,17 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    
+    <ImageView
+        android:id="@+id/study_ic_iv"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:src="@drawable/ic_main"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        />
     <TextView
-        android:id="@+id/studying"
+        android:id="@+id/study_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Studying&#10;Songs"
+        android:textSize="23dp"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/study_ic_iv"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="24dp"
+        />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/study_record_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="studying songs"
-        android:textAlignment="center"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
+        android:layout_marginTop="13dp"
+        android:orientation="vertical"
+        android:scrollbars="none"
+        android:layout_margin="15dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/study_tv"
+        tools:listitem="@layout/item_studying_song" />
 </androidx.constraintlayout.widget.ConstraintLayout>
