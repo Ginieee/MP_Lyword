@@ -2,9 +2,11 @@ package com.example.lyword
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.WindowManager
 import com.example.lyword.databinding.ActivityMainBinding
+import com.example.lyword.home.HomeFragment
+import com.example.lyword.mypage.MypageFragment
+import com.example.lyword.studying.StudyingFragment
+import com.example.lyword.today.TodayFragment
 
 class MainActivity : AppCompatActivity() {
 
