@@ -19,7 +19,8 @@ class HomePopularRVAdapter : RecyclerView.Adapter<HomePopularRVAdapter.ViewHolde
             binding.itemPopularNowRankTv.text = popular.rank.toString()
             binding.itemPopularNowTitleTv.text = popular.title
             binding.itemPopularNowArtistTv.text = popular.artist
-            binding.itemPopularNowAlbumArtCv.foreground = ContextCompat.getDrawable(context, popular.album_art)
+            binding.itemPopularNowAlbumArtIv.setImageResource(popular.album_art)
+            binding.itemPopularNowAlbumArtIv.clipToOutline = true
         }
     }
 
