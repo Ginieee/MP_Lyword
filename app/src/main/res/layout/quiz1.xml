@@ -242,7 +242,7 @@
                         android:id="@+id/quiz_35_percent"
                         android:layout_width="155dp"
                         android:layout_height="155dp"
-                        android:src="drawable/loader_35"
+                        android:src="@drawable/loader_35"
                         android:background="@drawable/round_button4"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
