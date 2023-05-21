@@ -28,5 +28,11 @@
     <string name="mypage_comp">Completion</string>
     <string name="mypage_ongoing_num">5</string>
     <string name="mypage_comp_num">54</string>
+    <string name="profile_setting">Profile Settings</string>
+    <string name="nickname">Nickname</string>
+    <string name="enter_nick"> Enter your nickname</string>
+    <string name="intro">Introduction</string>
+    <string name="enter_intro"> Please enter a introduction</string>
+    <string name="ok">ok</string>
 
 </resources>
