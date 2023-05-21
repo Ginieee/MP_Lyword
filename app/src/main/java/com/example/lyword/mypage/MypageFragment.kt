@@ -67,6 +67,12 @@ class MypageFragment : Fragment() {
 
             startForResult.launch(intent)
         }
+
+        binding.mypageSetting.setOnClickListener {
+            val intent = Intent(requireActivity(), SettingActivity::class.java)
+            startActivity(intent)
+
+        }
         return binding.root
     }
 

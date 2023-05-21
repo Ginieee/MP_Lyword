@@ -34,5 +34,11 @@
     <string name="intro">Introduction</string>
     <string name="enter_intro"> Please enter a introduction</string>
     <string name="ok">ok</string>
+    <string name="setting">setting</string>
+    <string name="notice_mp">Notice</string>
+    <string name="version_about">About the version</string>
+    <string name="contacts">Developer Contacts</string>
+    <string name="logout">Log-out</string>
+    <string name="withdrawal">Withdrawal</string>
 
 </resources>
