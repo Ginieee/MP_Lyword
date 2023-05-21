@@ -8,9 +8,16 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.BuildConfig.SEPARATE_KEY
 import com.example.lyword.databinding.ActivitySearchBinding
+import com.example.lyword.studying.lyrics.separate.*
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
+import java.io.IOException
+import java.net.URLDecoder
+import java.net.URLEncoder
 
-class SearchActivity : AppCompatActivity(), ITunesView {
+class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
 
     lateinit var binding : ActivitySearchBinding
 
@@ -47,15 +54,6 @@ class SearchActivity : AppCompatActivity(), ITunesView {
     }
 
     private fun clickListener() {
-//        binding.searchHeaderBtn.setOnClickListener {
-//            val text = binding.searchHeaderEt.text.split(" ")
-//            search = text.joinToString("+")
-//            Log.d("SEARCH_ACT", "search : $search")
-//            getSearchResult(search)
-//
-//            imm.hideSoftInputFromWindow(binding.searchHeaderEt.windowToken, 0)
-//        }
-
         binding.searchHeaderEt.setOnEditorActionListener { _, action, keyEvent ->
             if (action == EditorInfo.IME_ACTION_DONE ) {
                 val text = binding.searchHeaderEt.text.split(" ")
@@ -70,6 +68,14 @@ class SearchActivity : AppCompatActivity(), ITunesView {
                 false
             }
         }
+
+        searchResultAdapter.setMyItemClickListener(object : SearchRVAdapter.SearchItemClickListener {
+            override fun onSearchClicked(item: ITunesResult) {
+                Log.d("GET_LYRICS", "Search Item Clicked")
+                getLyrics(item.trackName, item.artistName)
+            }
+
+        })
     }
 
     private fun getSearchResult(search : String) {
@@ -77,6 +83,21 @@ class SearchActivity : AppCompatActivity(), ITunesView {
         iTunesService.setITunesView(this)
 
         iTunesService.getSearchResult(search)
+    }
+
+    private fun getSeparateLyrics(text : String) {
+        val separateService = SeparateService()
+        separateService.setSeparateView(this)
+
+        val request : SeparateRequest = SeparateRequest (
+            "test",
+            SeparateArgument (
+                "morp",
+                text
+            )
+        )
+
+        separateService.getSeparateLyrics(request)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -88,6 +109,8 @@ class SearchActivity : AppCompatActivity(), ITunesView {
             Log.d("SEARCH_ACT", result.toString())
             results.clear()
             results.addAll(result!!)
+            results.sortBy { it.releaseDate }
+            results.reverse()
             searchResultAdapter.addResults(results)
             searchResultAdapter.notifyDataSetChanged()
         } else {
@@ -95,5 +118,53 @@ class SearchActivity : AppCompatActivity(), ITunesView {
             searchResultAdapter.notifyDataSetChanged()
             Toast.makeText(this, "검색 결과가 없습니다.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun getLyrics(title : String, artist : String) {
+
+        var input = URLEncoder.encode(artist, "UTF-8") + "+" + URLEncoder.encode(title, "UTF-8")
+        Log.d("SEARCH_ACT_GET_LYRICS", input)
+        var url = "https://search.naver.com/search.naver?ie=UTF-8&sm=whl_hty&query=$input"
+        Log.d("SEARCH_ACT_GET_LYRICS", url)
+
+        var res = ""
+        val thread = object : Thread() {
+            override fun run() {
+                try {
+                    var doc : org.jsoup.nodes.Document? = Jsoup.connect(url).get()
+                    var lyrics : Elements? = doc?.select(".text_expand")
+                    var isEmpty = lyrics?.isEmpty()
+
+                    if (isEmpty == false) {
+                        var content = lyrics?.get(0)?.outerHtml()!!.split("<",">").toMutableList()
+                        content = content.subList(4, content.size - 8)
+                        content.removeAll{ it == "br"}
+                        res = content.joinToString(".")
+
+                        Log.d("SEARCH_ACT_GET_LYRICS", content.toString())
+                        Log.d("SEARCH_ACT_GET_LYRICS", res)
+                    } else {
+                        Log.d("SEARCH_ACT_GET_LYRICS","lyrics is empty")
+                    }
+                } catch (e : IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        thread.start()
+
+        try {
+            thread.join()
+        } catch (e : InterruptedException) {
+            e.printStackTrace()
+        }
+//        Log.d("SEARCH_ACT_GET_LYRICS", "result : $res")
+
+        getSeparateLyrics(res)
+
+    }
+
+    override fun onGetLyricsSuccess(code: Int, result: SeparateResult) {
+        Log.d("SEARCH_ACT", "onGetLyricsSuccess")
     }
 }
