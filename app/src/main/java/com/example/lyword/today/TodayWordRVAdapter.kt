@@ -26,8 +26,7 @@ class TodayWordRVAdapter(private var todayWords: ArrayList<TodayWord>): Recycler
 }
 
 class TodayWordViewHolder(view: View): RecyclerView.ViewHolder(view) {
-    //var todayLyrics = view.item_today_lyrics
-    //var todayKoreanLyrics = view.item_today_korean_lyrics
+
     var todayLyrics = view.findViewById<TextView>(R.id.item_today_lyrics)
     var todayKoreanLyrics = view.findViewById<TextView>(R.id.item_today_korean_lyrics)
 }
