@@ -20,6 +20,7 @@ android {
         // Key variables
         buildConfigField "String", "PAPAGO_ID", properties["papago.clientid"]
         buildConfigField "String", "PAPAGO_SECRET", properties["papago.clientsecret"]
+        buildConfigField "String", "SEPARATE_KEY", properties["separate.key"]
     }
 
     buildTypes {

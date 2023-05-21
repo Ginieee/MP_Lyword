@@ -16,6 +16,16 @@ class SearchRVAdapter : RecyclerView.Adapter<SearchRVAdapter.ViewHolder>() {
     private lateinit var context : Context
     private val results = ArrayList<ITunesResult>()
 
+    interface SearchItemClickListener{
+        fun onSearchClicked(item : ITunesResult)
+    }
+
+    private lateinit var mItemClickListener : SearchItemClickListener
+
+    fun setMyItemClickListener(itemClickListener : SearchItemClickListener) {
+        mItemClickListener = itemClickListener
+    }
+
     inner class ViewHolder(val binding : ItemPopularNowBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(result : ITunesResult, position: Int) {
             binding.itemPopularNowRankTv.text = position.toString()
@@ -42,6 +52,10 @@ class SearchRVAdapter : RecyclerView.Adapter<SearchRVAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(results[position], position + 1)
+
+        holder.itemView.setOnClickListener {
+            mItemClickListener.onSearchClicked(results[position])
+        }
     }
 
     override fun getItemCount(): Int = results.size
