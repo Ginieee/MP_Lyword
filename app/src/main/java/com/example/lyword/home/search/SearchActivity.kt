@@ -8,13 +8,11 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.lyword.BuildConfig.SEPARATE_KEY
 import com.example.lyword.databinding.ActivitySearchBinding
 import com.example.lyword.studying.lyrics.separate.*
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.io.IOException
-import java.net.URLDecoder
 import java.net.URLEncoder
 
 class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
@@ -164,7 +162,9 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
 
     }
 
-    override fun onGetLyricsSuccess(code: Int, result: SeparateResult) {
+    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>) {
         Log.d("SEARCH_ACT", "onGetLyricsSuccess")
     }
+
+
 }

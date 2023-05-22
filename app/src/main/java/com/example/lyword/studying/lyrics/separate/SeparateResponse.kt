@@ -3,19 +3,22 @@ package com.example.lyword.studying.lyrics.separate
 import com.google.gson.annotations.SerializedName
 
 data class SeparateResponse(
-    @SerializedName(value = "request_id") val requestId : String,
     @SerializedName(value = "result") val result : Int,
-    @SerializedName(value = "return_object") val return_object : List<SeparateResult>
+    @SerializedName(value = "return_object") val returnObject : SeparateResult
 )
 
 data class SeparateResult(
-    @SerializedName(value = "sentence") val sentenceList : List<Sentence>
+    @SerializedName(value = "sentence") val sentenceResult : List<SentenceResult>
 )
 
-data class Sentence(
+data class SentenceResult(
+    @SerializedName(value = "morp") val morpList : List<MorpResult>
+)
+
+data class MorpResult(
     @SerializedName(value = "id") val id : Int,
-    @SerializedName(value = "text") val text : String,
-    @SerializedName(value = "word") val separateList : List<Separate>
+    @SerializedName(value = "lemma") val text : String,
+    @SerializedName(value = "type") val type : String
 )
 
 data class Separate(
@@ -31,6 +34,6 @@ data class SeparateRequest(
 )
 
 data class SeparateArgument(
-    val code : String,
+    val analysis_code : String,
     val text : String
 )
