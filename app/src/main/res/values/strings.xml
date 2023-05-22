@@ -18,4 +18,27 @@
     <string name="agree_my_info">Consent to use personal information</string>
     <string name="clause_notify_text">Collection of personal information\nPurpose: use and provision of goods or services\nItems: Name, ID, password, email\nHolding period: Abolished after 3 months </string>
     <string name="signup_next">Continue</string>
+
+    <!-- MyPage -->
+    <string name="mypage">My page</string>
+    <string name="mypage_nickname">파이팅해야지</string>
+    <string name="mypage_level">Level 6</string>
+    <string name="mypage_intro">암어쥑쥑 끊임없이\n말을 걸어오는 나의 에스파</string>
+    <string name="mypage_ongoing">Ongoing</string>
+    <string name="mypage_comp">Completion</string>
+    <string name="mypage_ongoing_num">5</string>
+    <string name="mypage_comp_num">54</string>
+    <string name="profile_setting">Profile Settings</string>
+    <string name="nickname">Nickname</string>
+    <string name="enter_nick"> Enter your nickname</string>
+    <string name="intro">Introduction</string>
+    <string name="enter_intro"> Please enter a introduction</string>
+    <string name="ok">ok</string>
+    <string name="setting">setting</string>
+    <string name="notice_mp">Notice</string>
+    <string name="version_about">About the version</string>
+    <string name="contacts">Developer Contacts</string>
+    <string name="logout">Log-out</string>
+    <string name="withdrawal">Withdrawal</string>
+
 </resources>

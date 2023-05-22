@@ -20,6 +20,7 @@ android {
         // Key variables
         buildConfigField "String", "PAPAGO_ID", properties["papago.clientid"]
         buildConfigField "String", "PAPAGO_SECRET", properties["papago.clientsecret"]
+        buildConfigField "String", "SEPARATE_KEY", properties["separate.key"]
     }
 
     buildTypes {
@@ -67,4 +68,8 @@ dependencies {
 
     //kkma (형태소 분석 API)
     implementation files('libs/kkma-2.1.jar')
+
+    // 이미지 둥글~
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
 }
