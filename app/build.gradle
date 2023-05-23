@@ -72,4 +72,7 @@ dependencies {
     // 이미지 둥글~
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
+    // 로마자
+    implementation 'net.crizin:korean-romanizer:2.0.1'
+
 }
