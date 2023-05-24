@@ -21,6 +21,8 @@ android {
         buildConfigField "String", "PAPAGO_ID", properties["papago.clientid"]
         buildConfigField "String", "PAPAGO_SECRET", properties["papago.clientsecret"]
         buildConfigField "String", "SEPARATE_KEY", properties["separate.key"]
+        buildConfigField "String", "KAKAO_NATIVE_KEY", properties["kakao.native.key"]
+        buildConfigField "String", "KAKAO_KEY", properties["kakao.key"]
     }
 
     buildTypes {
@@ -68,4 +70,6 @@ dependencies {
 
     // 이미지 둥글~
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
 }
