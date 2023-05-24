@@ -4,16 +4,17 @@ import android.app.Activity
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lyword.studying.Word
 import com.example.lyword.databinding.ItemLyricsWordBinding
+import com.example.lyword.studying.lyrics.word.WordEntity
 
-class LyricsWordViewPagerAdapter(var wordList: ArrayList<Word>) : RecyclerView.Adapter<LyricsWordViewPagerAdapter.ViewHolder>() {
+class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : RecyclerView.Adapter<LyricsWordViewPagerAdapter.ViewHolder>() {
 
     inner class ViewHolder(val binding: ItemLyricsWordBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(word: Word) {
-
+        fun bind(word: WordEntity) {
+            binding.dialogVocTv.text = word.voc
+            binding.dialogPronTv.text = word.pron
+            binding.dialogMeanTv.text = word.meaning
         }
-
     }
 
     override fun onCreateViewHolder(

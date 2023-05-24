@@ -12,7 +12,7 @@ class SeparateService {
         this.separateView = separateView
     }
 
-    fun getSeparateLyrics(separateRequest : SeparateRequest) {
+    fun getSeparateLyrics(separateRequest : SeparateRequest, index: Int) {
         val separateService = getSeparateRetrofit().create(SeparateRetroInterface::class.java)
         Log.d("hi", separateRequest.toString())
         separateService.getSeparateList(separateRequest).enqueue(object : retrofit2.Callback<SeparateResponse> {
@@ -30,7 +30,7 @@ class SeparateService {
                         resMorp.addAll(sentence.morpList)
                     }
 
-                    separateView.onGetLyricsSuccess(resMorp)
+                    separateView.onGetLyricsSuccess(resMorp, index)
                 }
             }
 

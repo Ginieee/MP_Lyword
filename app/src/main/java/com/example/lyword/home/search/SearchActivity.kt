@@ -95,7 +95,7 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
             )
         )
 
-        separateService.getSeparateLyrics(request)
+        separateService.getSeparateLyrics(request, 0)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -162,7 +162,7 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
 
     }
 
-    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>) {
+    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int) {
         Log.d("SEARCH_ACT", "onGetLyricsSuccess")
     }
 

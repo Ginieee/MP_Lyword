@@ -8,9 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Room
 import com.example.lyword.databinding.FragmentStudyLyricsBinding
 import com.example.lyword.studying.Word
 import com.example.lyword.studying.lyrics.separate.*
+import com.example.lyword.studying.lyrics.word.WordDatabase
+import com.example.lyword.studying.lyrics.word.WordEntity
+import kotlinx.coroutines.*
 import org.json.JSONObject
 import org.snu.ids.kkma.ma.MExpression
 import org.snu.ids.kkma.ma.MorphemeAnalyzer
@@ -24,6 +28,7 @@ import java.net.URLEncoder
 
 class LyricsStudyFragment  : Fragment(), SeparateView {
     lateinit var binding: FragmentStudyLyricsBinding
+    lateinit var db: WordDatabase
 
     var exampleLyrics: ArrayList<String> = arrayListOf(
                 "두려워한다는 거 (ayy)",
@@ -88,72 +93,78 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentStudyLyricsBinding.inflate(inflater, container, false)
+        db = WordDatabase.getInstance(requireContext())!!
 
-        for(i in 0 until exampleLyrics.size){
-            getSeparateLyrics(exampleLyrics[i])
-        }
-        initRV(wordConverted)
+
+        val songIndex = 0;
+        createWords(songIndex)
+        initRV()
 
         return binding.root
     }
 
     // RecyclerView 세팅
-    private fun initRV(wordConverted: ArrayList<Word>){
-
+    private fun initRV(){
         val lyrics = ArrayList<Lyrics>()
-        var tr = ArrayList<String>()
+        val translateCount = exampleLyrics.size
+        var completedCount = 0
 
         for(li in exampleLyrics){
-            var translatedLine = ""
             val translate = Translate(li, object : Translate.TranslateCallback {
                 override fun onTranslateResult(result: String) {
-                    tr.add(result)
+                    lyrics.add(Lyrics(li, "tbc", result))
+                    completedCount++
+                    if (completedCount == translateCount) {
+                        val rvAdapter = LyricsRVAdapter(lyrics, requireContext())
+                        binding.studyLyricsRv.adapter = rvAdapter
+                        binding.studyLyricsRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                    }
                 }
             })
             translate.execute()
-            Log.d("Lyrics - translate", translatedLine)
-            lyrics.add(Lyrics(li, "tbc", translatedLine))
         }
-
-
-        for(i in 0 until exampleLyrics.size){
-            lyrics.add(Lyrics(exampleLyrics[i],"tbc", tr[i]))
-        }
-        val rvAdapter = LyricsRVAdapter(lyrics, requireContext())
-        binding.studyLyricsRv.adapter = rvAdapter
-        binding.studyLyricsRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
     //
-    private fun initWords(separateWord: ArrayList<String>, linenum: Int){
-        for(word in separateWord){
-            val translate2 = Trans(word)
-            val meaningList: ArrayList<String> = translate2.execute().get()
-            var meaning = ""
-            for (m in meaningList) {
-                meaning += m
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun createWords(songIndex: Int){
+        GlobalScope.launch(Dispatchers.IO) {
+            if (db.wordDao().hasSongIndex(songIndex) <= 0) {
+                Log.d("LyricsStudy-createWords", songIndex.toString())
+                for (i in 0 until exampleLyrics.size) {
+                    getSeparateLyrics(exampleLyrics[i], i)
+                }
             }
-            wordConverted.add(Word(word, meaning, "notyet", linenum))
         }
-        Log.d("Lyrics - Word", wordConverted.toString())
     }
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun initWords(separateWord: ArrayList<String>, linenum: Int) {
+        var wordIndex = 0
+        var completedCount = separateWord.size
 
-    var linenum = -1
-    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>) {
-        var separateWord = ArrayList<String>()
-        for (i in result){
-            if(i.type.slice(IntRange(0,0)) == "N"){
-                separateWord.add(i.text)
-            }
-            else if(i.type.slice(IntRange(0,0)) == "V"){
-                separateWord.add(i.text+"다")
+        GlobalScope.launch(Dispatchers.IO) {
+            for (word in separateWord) {
+                val translate2 = Trans(word)
+                val meaningList: ArrayList<String> = translate2.execute().get()
+                var meaning = ""
+                for (m in meaningList) {
+                    if (meaning != "") {
+                        meaning += ", "
+                    }
+                    meaning += m.replace(";", "")
+                }
+                db.wordDao().insertWord(WordEntity(word, "notyet", meaning, 0, linenum))
+                wordIndex += 1
+                if (wordIndex == completedCount) {
+                    withContext(Dispatchers.Main) {
+                        Log.d("Lyrics - Word", wordConverted.toString())
+                    }
+                }
             }
         }
-        linenum+=1
-        initWords(separateWord, linenum)
     }
 
     // 형태소 분석
-    private fun getSeparateLyrics(text : String) {
+    private fun getSeparateLyrics(text : String, index: Int) {
         val separateService = SeparateService()
         separateService.setSeparateView(this)
 
@@ -164,7 +175,21 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
                 text
             )
         )
-        separateService.getSeparateLyrics(request)
+        separateService.getSeparateLyrics(request, index)
+    }
+    // 결과
+    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int) {
+        var separateWord = ArrayList<String>()
+        for (i in result){
+            if(i.type.slice(IntRange(0,0)) == "N"){
+                separateWord.add(i.text)
+            }
+            else if(i.type.slice(IntRange(0,0)) == "V"){
+                separateWord.add(i.text+"다")
+            }
+        }
+        Log.d("Lyrics - getWord", separateWord.toString())
+        initWords(separateWord, index)
     }
     // 단어 번역
     class Trans(private val str: String) : AsyncTask<String, Void, ArrayList<String>>() {
