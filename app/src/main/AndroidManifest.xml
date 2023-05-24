@@ -20,6 +20,10 @@
         android:theme="@style/Theme.Lyword"
         tools:targetApi="31">
         <activity
+            android:name=".kakao.LoginActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".mypage.SettingActivity"
             android:exported="false" />
         <activity

@@ -46,7 +46,6 @@ class MypageFragment : Fragment() {
     ): View? {
         binding = FragmentMypageBinding.inflate(inflater, container, false)
 
-
         // Viewpager 세팅
         val mypageAdapter = MypageViewpagerAdapter(this)
         val menu = arrayListOf("Ongoing", "Completion")
