@@ -36,12 +36,12 @@ class LyricsWordDialog : AppCompatActivity() {
 
         // 임시 더미데이터
         val words = ArrayList<Word>()
-        words.add(Word("one", "singer1", "33"))
-        words.add(Word("one", "singer1", "33"))
-        words.add(Word("one", "singer1", "33"))
-        words.add(Word("one", "singer1", "33"))
-        words.add(Word("one", "singer1", "33"))
-        words.add(Word("one", "singer1", "33"))
+        words.add(Word("one", "singer1", "33", 1))
+        words.add(Word("one", "singer1", "33", 1))
+        words.add(Word("one", "singer1", "33", 1))
+        words.add(Word("one", "singer1", "33", 1))
+        words.add(Word("one", "singer1", "33", 1))
+        words.add(Word("one", "singer1", "33", 1))
 
         // 리사이클러뷰 세팅
         binding.dialogLyricsVp.adapter = LyricsWordViewPagerAdapter(words)
