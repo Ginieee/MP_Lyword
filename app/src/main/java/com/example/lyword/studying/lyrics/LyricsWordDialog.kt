@@ -6,9 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import androidx.viewpager2.widget.ViewPager2
+import com.example.lyword.data.LywordDatabase
 import com.example.lyword.databinding.DialogLyricsWordBinding
 import com.example.lyword.data.dao.WordDao
-import com.example.lyword.data.WordDatabase
 import com.example.lyword.data.entity.WordEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -42,13 +42,13 @@ class LyricsWordDialog : AppCompatActivity() {
     }
 
     private fun initVP(){
-        val wordDatabase = Room.databaseBuilder(
+        val lywordDatabase = Room.databaseBuilder(
             applicationContext,
-            WordDatabase::class.java,
+            LywordDatabase::class.java,
             "word-database"
         ).build()
 
-        wordDao = wordDatabase.wordDao()
+        wordDao = lywordDatabase.wordDao
 
         lifecycleScope.launch {
             val wordList = getWordListFromDatabase()

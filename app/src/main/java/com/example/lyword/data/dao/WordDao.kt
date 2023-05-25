@@ -12,7 +12,4 @@ interface WordDao {
 
     @Insert
     fun insertWord(wordEntity: WordEntity)
-
-    @Query("SELECT COUNT(*) FROM WordEntity WHERE songIndex = :index")
-    suspend fun hasSongIndex(index: Int): Int
 }

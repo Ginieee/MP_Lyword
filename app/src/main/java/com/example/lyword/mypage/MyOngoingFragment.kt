@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentMyOngoingBinding
-import com.example.lyword.studying.Study
 import com.example.lyword.studying.StudyingSongRVAdapter
 
 
@@ -28,13 +28,7 @@ class MyOngoingFragment : Fragment() {
 
     private fun initRV(){
 
-        val studys = ArrayList<Study>()
-        studys.add(Study("one", "singer1", 33))
-        studys.add(Study("two", "singer2", 33))
-        studys.add(Study("three", "singer3", 33))
-        studys.add(Study("four", "singer4", 33))
-        studys.add(Study("five", "singer5", 33))
-        studys.add(Study("six", "singer6", 33))
+        val studys = ArrayList<StudyEntity>()
 
         val rvAdapter = StudyingSongRVAdapter(studys, requireContext())
         binding.studyRecordRv.adapter = rvAdapter
