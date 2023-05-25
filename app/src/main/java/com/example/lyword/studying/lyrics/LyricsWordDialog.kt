@@ -8,7 +8,7 @@ import androidx.room.Room
 import androidx.viewpager2.widget.ViewPager2
 import com.example.lyword.databinding.DialogLyricsWordBinding
 import com.example.lyword.studying.lyrics.word.WordDao
-import com.example.lyword.studying.lyrics.word.WordDatabase
+import com.example.lyword.data.WordDatabase
 import com.example.lyword.studying.lyrics.word.WordEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
