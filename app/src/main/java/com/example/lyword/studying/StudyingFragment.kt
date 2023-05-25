@@ -1,24 +1,12 @@
 package com.example.lyword.studying
 
-import android.os.AsyncTask
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lyword.databinding.FragmentStudyingBinding
-import org.json.JSONObject
-import org.snu.ids.kkma.ma.MExpression
-import org.snu.ids.kkma.ma.MorphemeAnalyzer
-import org.snu.ids.kkma.ma.Sentence
-import java.io.BufferedReader
-import java.io.DataOutputStream
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import java.net.URLEncoder
 
 class StudyingFragment : Fragment() {
     lateinit var binding : FragmentStudyingBinding
@@ -34,8 +22,6 @@ class StudyingFragment : Fragment() {
 
         return binding.root
     }
-
-
 
     private fun initRV(){
 

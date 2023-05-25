@@ -11,5 +11,6 @@
     <color name="mainPink">#EF6D85</color>
     <color name="subPink">#F8E0E0</color>
     <color name="selectedPink">#FFC1C1</color>
+    <color name="lyricsHighlight">#F24768</color>
 
 </resources>
