@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/dialog_pron"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        >
+        <ImageButton
+            android:id="@+id/romaza_close_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dialog_pronunciation_close"
+            android:background="#00000000"
+
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+
+        >
+    <TextView
+        android:id="@+id/dialog_pron_original"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="가사"
+        android:textSize="30dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
+        android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:textSize="30dp"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/dialog_pron_romaza"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="가사"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+    <ImageButton
+        android:id="@+id/romaza_speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/romaza_speaker"
+        android:layout_marginLeft="15dp"
+        android:background="#00000000"
+
+        />
+
+    </LinearLayout>
+</LinearLayout>

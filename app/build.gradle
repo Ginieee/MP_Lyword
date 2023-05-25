@@ -22,6 +22,8 @@ android {
         buildConfigField "String", "PAPAGO_ID", properties["papago.clientid"]
         buildConfigField "String", "PAPAGO_SECRET", properties["papago.clientsecret"]
         buildConfigField "String", "SEPARATE_KEY", properties["separate.key"]
+        buildConfigField "String", "KAKAO_NATIVE_KEY", properties["kakao.native.key"]
+        buildConfigField "String", "KAKAO_KEY", properties["kakao.key"]
     }
 
     buildTypes {
@@ -79,4 +81,9 @@ dependencies {
     implementation "androidx.room:room-runtime:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"
     implementation 'androidx.room:room-ktx:2.5.1'
+
+    // 로마자
+    implementation 'net.crizin:korean-romanizer:2.0.1'
+
+    implementation 'com.kakao.sdk:v2-user:2.10.0'
 }

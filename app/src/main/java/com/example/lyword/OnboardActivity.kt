@@ -9,6 +9,7 @@ import com.example.lyword.databinding.ActivityMainBinding
 import com.example.lyword.databinding.ActivityOnboardBinding
 import com.example.lyword.databinding.BottomSheetClauseBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.kakao.sdk.user.UserApiClient
 
 class OnboardActivity : AppCompatActivity() {
 
@@ -21,6 +22,12 @@ class OnboardActivity : AppCompatActivity() {
 
         binding.onboardStart.setOnClickListener{
             openClauseBottomSheet()
+        }
+
+        // 이름이랑 닉네임 받아오기
+        UserApiClient.instance.me { user, error ->
+//            binding.nickname.text = "${user?.kakaoAccount?.profile?.nickname}"
+//            binding.email.text = "${user?.kakaoAccount?.email}"
         }
 
     }
