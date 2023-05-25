@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lyword.R
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.ItemRecentStudyBinding
 
@@ -20,7 +21,7 @@ class HomeStudyingRVAdapter : RecyclerView.Adapter<HomeStudyingRVAdapter.ViewHol
             binding.itemTitleTv.text = studying.title
             binding.itemArtistTv.text = studying.artist
             binding.itemAlbumArtCv.foreground = ContextCompat.getDrawable(context, studying.album_art)
-            binding.itemPercentIv.setImageResource(studying.percent_img)
+            binding.itemPercentIv.setImageResource(R.drawable.example_album_art_2)
         }
     }
 

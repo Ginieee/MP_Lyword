@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentMyCompletionBinding
-import com.example.lyword.studying.Study
 
 class MyCompletionFragment : Fragment() {
     lateinit var binding: FragmentMyCompletionBinding
@@ -24,13 +24,7 @@ class MyCompletionFragment : Fragment() {
 
     private fun initRV(){
 
-        val studys = ArrayList<Study>()
-        studys.add(Study("one", "singer1", 100))
-        studys.add(Study("two", "singer2", 100))
-        studys.add(Study("three", "singer3", 100))
-        studys.add(Study("four", "singer4", 100))
-        studys.add(Study("five", "singer5", 100))
-        studys.add(Study("six", "singer6", 100))
+        val studys = ArrayList<StudyEntity>()
 
         val rvAdapter = CompletionSongRVAdapter(studys, requireContext())
         binding.studyRecordRv.adapter = rvAdapter

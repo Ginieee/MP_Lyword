@@ -4,14 +4,14 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.ItemCompletionSongBinding
-import com.example.lyword.studying.Study
 
-class CompletionSongRVAdapter (var songList: ArrayList<Study>, var context: Context): RecyclerView.Adapter<CompletionSongRVAdapter.ViewHolder>() {
+class CompletionSongRVAdapter (var songList: ArrayList<StudyEntity>, var context: Context): RecyclerView.Adapter<CompletionSongRVAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: ItemCompletionSongBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(study: Study) {
+        fun bind(study: StudyEntity) {
             binding.studyingItemSongIv.text = study.title
             binding.studyingItemSingerIv.text = study.artist
             //binding.studyingItemAlbumIv.setImageResource(study.album_art)

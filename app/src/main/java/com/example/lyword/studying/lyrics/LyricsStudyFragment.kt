@@ -125,7 +125,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
     @OptIn(DelicateCoroutinesApi::class)
     private fun createWords(songIndex: Int){
         GlobalScope.launch(Dispatchers.IO) {
-            if (db.wordDao.hasSongIndex(songIndex) <= 0) {
+            if (-1 <= 0) {
                 Log.d("LyricsStudy-createWords", songIndex.toString())
                 for (i in 0 until exampleLyrics.size) {
                     getSeparateLyrics(exampleLyrics[i], i)

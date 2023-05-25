@@ -4,16 +4,17 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Update
+import com.example.lyword.data.entity.SentenceEntity
 import org.snu.ids.kkma.ma.Sentence
 
 @Dao
 interface SentenceDao {
     @Insert
-    fun insertSentence(sentence : Sentence) : Long
+    fun insertSentence(sentence : SentenceEntity) : Long
 
     @Delete
-    fun deleteSentence(sentence : Sentence)
+    fun deleteSentence(sentence : SentenceEntity)
 
     @Update
-    fun updateSentence(sentence : Sentence)
+    fun updateSentence(sentence : SentenceEntity)
 }

@@ -11,9 +11,9 @@ class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : Recyc
 
     inner class ViewHolder(val binding: ItemLyricsWordBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(word: WordEntity) {
-            binding.dialogVocTv.text = word.voc
-            binding.dialogPronTv.text = word.pron
-            binding.dialogMeanTv.text = word.meaning
+            binding.dialogVocTv.text = word.wordOrigin
+            binding.dialogPronTv.text = word.wordPronunciation
+            binding.dialogMeanTv.text = word.wordEnglish
         }
     }
 
