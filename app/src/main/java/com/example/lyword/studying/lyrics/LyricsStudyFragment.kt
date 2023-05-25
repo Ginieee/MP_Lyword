@@ -12,7 +12,7 @@ import com.example.lyword.databinding.FragmentStudyLyricsBinding
 import com.example.lyword.studying.Word
 import com.example.lyword.studying.lyrics.separate.*
 import com.example.lyword.data.WordDatabase
-import com.example.lyword.studying.lyrics.word.WordEntity
+import com.example.lyword.data.entity.WordEntity
 import kotlinx.coroutines.*
 import org.json.JSONObject
 import java.io.BufferedReader

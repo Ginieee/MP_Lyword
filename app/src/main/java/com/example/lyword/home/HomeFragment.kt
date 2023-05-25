@@ -10,13 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lyword.R
 import com.example.lyword.home.search.SearchActivity
-import com.example.lyword.studying.Study
+import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     lateinit var binding : FragmentHomeBinding
 
-    private val dummyStudying : ArrayList<Study> = arrayListOf()
+    private val dummyStudying : ArrayList<StudyEntity> = arrayListOf()
     private val dummyPopular : ArrayList<PopularMusic> = arrayListOf()
 
     private val recentStudyingAdapter = HomeStudyingRVAdapter()
@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
 
         dummyStudying.apply {
             add(
-                Study(
+                StudyEntity(
                     "Kitsch",
                     "IVE",
                     R.drawable.example_album_art_1,
@@ -70,7 +70,7 @@ class HomeFragment : Fragment() {
                 )
             )
             add(
-                Study(
+                StudyEntity(
                     "손오공",
                     "세븐틴",
                     R.drawable.example_album_art_2,
@@ -79,7 +79,7 @@ class HomeFragment : Fragment() {
                 )
             )
             add(
-                Study(
+                StudyEntity(
                     "Spicy",
                     "에스파",
                     R.drawable.example_album_art_3,
@@ -88,7 +88,7 @@ class HomeFragment : Fragment() {
                 )
             )
             add(
-                Study(
+                StudyEntity(
                     "Ditto",
                     "뉴진스",
                     R.drawable.example_album_art_4,
@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
                 )
             )
             add(
-                Study(
+                StudyEntity(
                     "Hard to love",
                     "블랙핑크",
                     R.drawable.example_album_art_5,
