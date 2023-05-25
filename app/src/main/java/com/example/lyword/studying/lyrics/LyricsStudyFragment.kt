@@ -30,7 +30,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
     lateinit var binding: FragmentStudyLyricsBinding
     lateinit var db: WordDatabase
 
-    var exampleLyrics: ArrayList<String> = arrayListOf(
+    private var exampleLyrics: ArrayList<String> = arrayListOf(
                 "두려워한다는 거 (ayy)",
                 "나도 알아 우린" ,
                 "석양이 지나가고",
@@ -85,7 +85,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
 //                "La-la-la-la (no one take you down)"
     )
 
-    var wordConverted = ArrayList<Word>()
+    private var wordConverted = ArrayList<Word>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,6 +96,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         db = WordDatabase.getInstance(requireContext())!!
 
 
+        // 나중에 곡 정보 받아오면 인덱스 설정해서 songIndex에 넣으면 됨
         val songIndex = 0;
         createWords(songIndex)
         initRV()
@@ -112,7 +113,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         for(li in exampleLyrics){
             val translate = Translate(li, object : Translate.TranslateCallback {
                 override fun onTranslateResult(result: String) {
-                    lyrics.add(Lyrics(li, "tbc", result))
+                    lyrics.add(Lyrics(completedCount, li, "tbc", result))
                     completedCount++
                     if (completedCount == translateCount) {
                         val rvAdapter = LyricsRVAdapter(lyrics, requireContext())
@@ -124,7 +125,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
             translate.execute()
         }
     }
-    //
+    // 단어 객체 만들고 룸디비에 저장하는 과정
     @OptIn(DelicateCoroutinesApi::class)
     private fun createWords(songIndex: Int){
         GlobalScope.launch(Dispatchers.IO) {
@@ -163,6 +164,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         }
     }
 
+    // API
     // 형태소 분석
     private fun getSeparateLyrics(text : String, index: Int) {
         val separateService = SeparateService()
@@ -177,7 +179,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         )
         separateService.getSeparateLyrics(request, index)
     }
-    // 결과
+    // 형태소 분석 결과 받아오기
     override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int) {
         var separateWord = ArrayList<String>()
         for (i in result){
