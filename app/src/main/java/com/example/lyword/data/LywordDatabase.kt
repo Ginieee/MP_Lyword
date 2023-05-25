@@ -32,7 +32,7 @@ abstract class LywordDatabase: RoomDatabase() {
         @Volatile
         private var INSTANCE: LywordDatabase? = null
 
-        fun getInstance(context: Context): LywordDatabase?{
+        fun getInstance(context: Context): LywordDatabase {
             synchronized(this){
                 var instance = INSTANCE
 

@@ -47,5 +47,21 @@
         tools:listitem="@layout/item_popular_now"
         android:paddingBottom="20dp"/>
 
+    <TextView
+        android:id="@+id/search_select_tv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Study this music"
+        android:background="@drawable/bg_rectangle__main_10dp"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:visibility="gone"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

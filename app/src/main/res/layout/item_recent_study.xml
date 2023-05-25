@@ -5,12 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginEnd="15dp">
     
-    <androidx.cardview.widget.CardView
+    <ImageView
         android:id="@+id/item_album_art_cv"
         android:layout_width="115dp"
         android:layout_height="115dp"
-        android:foreground="@drawable/example_album_art_1"
-        app:cardCornerRadius="10dp"
+        android:src="@drawable/example_album_art_1"
+        android:background="@drawable/bg_rectangle_10dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
