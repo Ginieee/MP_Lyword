@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.text.Html
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
@@ -22,12 +23,25 @@ class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): 
             binding.itemLyricsLyTv.text = lyrics.ly
             binding.itemLyricsPronTv.text = lyrics.pron
             binding.itemLyricsTransTv.text = lyrics.trans
-        }
 
-        fun clickLyrics(position: Int){
+            if (adapterPosition == selectedItem) {
+                setTextColorSelected()
+            } else {
+                setTextColorDefault()
+            }
+        }
+        private fun setTextColorSelected() {
             binding.itemLyricsLyTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsPronTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsTransTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
+            binding.itemLyricsStartIv.visibility = View.VISIBLE
+        }
+
+        private fun setTextColorDefault() {
+            binding.itemLyricsLyTv.setTextColor(ContextCompat.getColor(context, R.color.black))
+            binding.itemLyricsPronTv.setTextColor(ContextCompat.getColor(context, R.color.black))
+            binding.itemLyricsTransTv.setTextColor(ContextCompat.getColor(context, R.color.black))
+            binding.itemLyricsStartIv.visibility = View.INVISIBLE
         }
 
         fun startDialog() {
@@ -47,13 +61,16 @@ class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): 
         holder.bind(lyricsList[position])
 
         holder.binding.itemLyricsLyTv.setOnClickListener {
-            holder.clickLyrics(position)
+            selectedItem = holder.adapterPosition
+            notifyDataSetChanged()
         }
         holder.binding.itemLyricsPronTv.setOnClickListener {
-            holder.clickLyrics(position)
+            selectedItem = holder.adapterPosition
+            notifyDataSetChanged()
         }
         holder.binding.itemLyricsTransTv.setOnClickListener {
-            holder.clickLyrics(position)
+            selectedItem = holder.adapterPosition
+            notifyDataSetChanged()
         }
         holder.binding.itemLyricsStartIv.setOnClickListener {
             holder.startDialog()

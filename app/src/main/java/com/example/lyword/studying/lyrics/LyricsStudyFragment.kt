@@ -91,7 +91,6 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         binding = FragmentStudyLyricsBinding.inflate(inflater, container, false)
         db = LywordDatabase.getInstance(requireContext())!!
 
-
         // 나중에 곡 정보 받아오면 인덱스 설정해서 songIndex에 넣으면 됨
         val songIndex = 0;
         createWords(songIndex)
