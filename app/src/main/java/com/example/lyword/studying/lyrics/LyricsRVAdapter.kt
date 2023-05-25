@@ -21,11 +21,9 @@ class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): 
         }
 
         fun startDialog() {
-            // 다이얼로그로 구현하면 제약이 많아서 그냥 액티비티로 갈아탐
+
             val intent = Intent(context, LyricsWordDialog::class.java)
             (context as Activity).startActivityForResult(intent,101)
-
-            //LyricsWordDialog().show((context as LyricsActivity).supportFragmentManager, "dialog")
         }
     }
 

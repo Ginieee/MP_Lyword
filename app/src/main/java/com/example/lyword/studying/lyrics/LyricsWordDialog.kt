@@ -3,13 +3,22 @@ package com.example.lyword.studying.lyrics
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import androidx.room.Room
 import androidx.viewpager2.widget.ViewPager2
-import com.example.lyword.studying.Word
 import com.example.lyword.databinding.DialogLyricsWordBinding
+import com.example.lyword.studying.lyrics.word.WordDao
+import com.example.lyword.studying.lyrics.word.WordDatabase
+import com.example.lyword.studying.lyrics.word.WordEntity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LyricsWordDialog : AppCompatActivity() {
 
     lateinit var binding: DialogLyricsWordBinding
+    lateinit var wordDao: WordDao
+    lateinit var wordAdapter: LyricsWordViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,18 +42,24 @@ class LyricsWordDialog : AppCompatActivity() {
     }
 
     private fun initVP(){
+        val wordDatabase = Room.databaseBuilder(
+            applicationContext,
+            WordDatabase::class.java,
+            "word-database"
+        ).build()
 
-        // 임시 더미데이터
-        val words = ArrayList<Word>()
-        words.add(Word("one", "singer1", "33", 1))
-        words.add(Word("one", "singer1", "33", 1))
-        words.add(Word("one", "singer1", "33", 1))
-        words.add(Word("one", "singer1", "33", 1))
-        words.add(Word("one", "singer1", "33", 1))
-        words.add(Word("one", "singer1", "33", 1))
+        wordDao = wordDatabase.wordDao()
 
-        // 리사이클러뷰 세팅
-        binding.dialogLyricsVp.adapter = LyricsWordViewPagerAdapter(words)
-        binding.dialogLyricsVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        lifecycleScope.launch {
+            val wordList = getWordListFromDatabase()
+            wordAdapter = LyricsWordViewPagerAdapter(wordList)
+            binding.dialogLyricsVp.adapter = wordAdapter
+            binding.dialogLyricsVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+        }
+
+    }
+
+    private suspend fun getWordListFromDatabase(): List<WordEntity> = withContext(Dispatchers.IO) {
+        wordDao.getWord()
     }
 }
