@@ -3,11 +3,15 @@ package com.example.lyword.home.search
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.data.LywordDatabase
+import com.example.lyword.data.entity.SentenceEntity
+import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.ActivitySearchBinding
 import com.example.lyword.studying.lyrics.separate.*
 import org.jsoup.Jsoup
@@ -25,11 +29,18 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
     private var search : String = ""
     private lateinit var imm : InputMethodManager
 
+    lateinit var db : LywordDatabase
+    private var selectedStudy : StudyEntity = StudyEntity()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.searchSelectTv.visibility = View.GONE
+
+        db = LywordDatabase.getInstance(this)
+
         readyToSearch()
 
         Log.d("HOME_FRG", "검색 액티비티 열림")
@@ -70,10 +81,32 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
         searchResultAdapter.setMyItemClickListener(object : SearchRVAdapter.SearchItemClickListener {
             override fun onSearchClicked(item: ITunesResult) {
                 Log.d("GET_LYRICS", "Search Item Clicked")
+                selectedStudy.title = item.trackName
+                selectedStudy.artist = item.artistName
+                selectedStudy.album_art = item.artworkUrl100
+
                 getLyrics(item.trackName, item.artistName)
             }
 
         })
+
+        binding.searchSelectTv.setOnClickListener {
+            var addStudyThread : Thread = Thread {
+                val studyIdx = db.studyDao.insertStudy(selectedStudy)
+                Log.d("ADD_STUDY", "study idx : $studyIdx")
+            }
+            addStudyThread.start()
+
+            try {
+                addStudyThread.join()
+            } catch (e : InterruptedException) {
+                e.printStackTrace()
+            }
+
+            binding.searchSelectTv.visibility = View.GONE
+
+            finish()
+        }
     }
 
     private fun getSearchResult(search : String) {
@@ -81,21 +114,6 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
         iTunesService.setITunesView(this)
 
         iTunesService.getSearchResult(search)
-    }
-
-    private fun getSeparateLyrics(text : String) {
-        val separateService = SeparateService()
-        separateService.setSeparateView(this)
-
-        val request : SeparateRequest = SeparateRequest (
-            "test",
-            SeparateArgument (
-                "morp",
-                text
-            )
-        )
-
-        separateService.getSeparateLyrics(request, 0)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -125,7 +143,8 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
         var url = "https://search.naver.com/search.naver?ie=UTF-8&sm=whl_hty&query=$input"
         Log.d("SEARCH_ACT_GET_LYRICS", url)
 
-        var res = ""
+        var sentenceList = ArrayList<String>().toMutableList()
+        val selectedSentenceList = ArrayList<SentenceEntity>()
         val thread = object : Thread() {
             override fun run() {
                 try {
@@ -137,10 +156,9 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
                         var content = lyrics?.get(0)?.outerHtml()!!.split("<",">").toMutableList()
                         content = content.subList(4, content.size - 8)
                         content.removeAll{ it == "br"}
-                        res = content.joinToString(".")
+                        sentenceList = content
 
                         Log.d("SEARCH_ACT_GET_LYRICS", content.toString())
-                        Log.d("SEARCH_ACT_GET_LYRICS", res)
                     } else {
                         Log.d("SEARCH_ACT_GET_LYRICS","lyrics is empty")
                     }
@@ -156,9 +174,15 @@ class SearchActivity : AppCompatActivity(), ITunesView, SeparateView {
         } catch (e : InterruptedException) {
             e.printStackTrace()
         }
-//        Log.d("SEARCH_ACT_GET_LYRICS", "result : $res")
 
-        getSeparateLyrics(res)
+        for (i in sentenceList) {
+            var input = SentenceEntity()
+            input.sentenceOrigin = i
+            selectedSentenceList.add(input)
+        }
+        selectedStudy.sentenceList = selectedSentenceList
+
+        binding.searchSelectTv.visibility = View.VISIBLE
 
     }
 

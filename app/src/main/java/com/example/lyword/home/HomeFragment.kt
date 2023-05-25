@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lyword.R
+import com.example.lyword.data.LywordDatabase
 import com.example.lyword.home.search.SearchActivity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
@@ -16,11 +17,13 @@ import com.example.lyword.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
     lateinit var binding : FragmentHomeBinding
 
-    private val dummyStudying : ArrayList<StudyEntity> = arrayListOf()
-    private val dummyPopular : ArrayList<PopularMusic> = arrayListOf()
-
     private val recentStudyingAdapter = HomeStudyingRVAdapter()
     private val popularMusicAdapter = HomePopularRVAdapter()
+
+    lateinit var db : LywordDatabase
+
+    private var studyingMusic : ArrayList<StudyEntity> = arrayListOf()
+    private var popularMusic : ArrayList<PopularMusic> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,23 +31,30 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        db = LywordDatabase.getInstance(requireContext())
 
-        getDummy()
-        setAdapter()
+//        getList()
+//        setAdapter()
         clickListener()
 
 
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        getList()
+        setAdapter()
+    }
+
     private fun setAdapter() {
         binding.homeRecentStudyContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.homeRecentStudyContentRv.adapter = recentStudyingAdapter
-        recentStudyingAdapter.addStudying(dummyStudying)
+        recentStudyingAdapter.addStudying(studyingMusic)
 
         binding.homePopularNowContentRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.homePopularNowContentRv.adapter = popularMusicAdapter
-        popularMusicAdapter.addPopular(dummyPopular)
+        popularMusicAdapter.addPopular(popularMusic)
     }
 
     private fun clickListener() {
@@ -55,83 +65,65 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getDummy() {
-        dummyStudying.clear()
-        dummyPopular.clear()
+    private fun getStudyingList() {
+        studyingMusic.clear()
+        var studyingListThread : Thread = Thread {
+            studyingMusic = db.studyDao.getStudyList() as ArrayList<StudyEntity>
+            recentStudyingAdapter.addStudying(studyingMusic)
+            requireActivity().runOnUiThread {
+                recentStudyingAdapter.notifyDataSetChanged()
+            }
+            if (studyingMusic.isEmpty()) {
+                requireActivity().runOnUiThread {
+                    binding.homeRecentStudyContentNone.visibility = View.VISIBLE
+                }
+            } else {
+                requireActivity().runOnUiThread {
+                    binding.homeRecentStudyContentNone.visibility = View.GONE
+                }
+            }
+        }
+        studyingListThread.start()
 
-//        dummyStudying.apply {
-//            add(
-//                StudyEntity(
-//                    "Kitsch",
-//                    "IVE",
-//                    R.drawable.example_album_art_1,
-//                    10,
-//                    R.drawable.loader_10
-//                )
-//            )
-//            add(
-//                StudyEntity(
-//                    "손오공",
-//                    "세븐틴",
-//                    R.drawable.example_album_art_2,
-//                    35,
-//                    R.drawable.loader_35
-//                )
-//            )
-//            add(
-//                StudyEntity(
-//                    "Spicy",
-//                    "에스파",
-//                    R.drawable.example_album_art_3,
-//                    50,
-//                    R.drawable.loader_50
-//                )
-//            )
-//            add(
-//                StudyEntity(
-//                    "Ditto",
-//                    "뉴진스",
-//                    R.drawable.example_album_art_4,
-//                    85,
-//                    R.drawable.loader_85
-//                )
-//            )
-//            add(
-//                StudyEntity(
-//                    "Hard to love",
-//                    "블랙핑크",
-//                    R.drawable.example_album_art_5,
-//                    100,
-//                    R.drawable.loader_100
-//                )
-//            )
-//        }
+        try {
+            studyingListThread.join()
+        } catch (e : InterruptedException) {
+            e.printStackTrace()
+        }
+    }
 
-//        dummyPopular.apply {
-//            add(
-//                PopularMusic(
-//                    1,
-//                    "Kitsch",
-//                    "IVE",
-//                    R.drawable.example_album_art_1
-//                )
-//            )
-//            add(
-//                PopularMusic(
-//                    2,
-//                    "손오공",
-//                    "세븐틴",
-//                    R.drawable.example_album_art_2
-//                )
-//            )
-//            add(
-//                PopularMusic(
-//                    3,
-//                    "Spicy",
-//                    "에스파",
-//                    R.drawable.example_album_art_3
-//                )
-//            )
-//        }
+    private fun getPopularList() {
+        popularMusic.clear()
+        popularMusic.apply {
+            add(
+                PopularMusic(
+                    1,
+                    "Kitsch",
+                    "IVE",
+                    R.drawable.example_album_art_1
+                )
+            )
+            add(
+                PopularMusic(
+                    2,
+                    "손오공",
+                    "세븐틴",
+                    R.drawable.example_album_art_2
+                )
+            )
+            add(
+                PopularMusic(
+                    3,
+                    "Spicy",
+                    "에스파",
+                    R.drawable.example_album_art_3
+                )
+            )
+        }
+    }
+
+    private fun getList() {
+        getStudyingList()
+        getPopularList()
     }
 }
