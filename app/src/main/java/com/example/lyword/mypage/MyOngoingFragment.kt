@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lyword.Song
 import com.example.lyword.databinding.FragmentMyOngoingBinding
+import com.example.lyword.studying.Study
 import com.example.lyword.studying.StudyingSongRVAdapter
 
 
@@ -28,15 +29,15 @@ class MyOngoingFragment : Fragment() {
 
     private fun initRV(){
 
-        val songs = ArrayList<Song>()
-        songs.add(Song("one", "singer1", 33))
-        songs.add(Song("two", "singer2", 33))
-        songs.add(Song("three", "singer3", 33))
-        songs.add(Song("four", "singer4", 33))
-        songs.add(Song("five", "singer5", 33))
-        songs.add(Song("six", "singer6", 33))
+        val studys = ArrayList<Study>()
+        studys.add(Study("one", "singer1", 33))
+        studys.add(Study("two", "singer2", 33))
+        studys.add(Study("three", "singer3", 33))
+        studys.add(Study("four", "singer4", 33))
+        studys.add(Study("five", "singer5", 33))
+        studys.add(Study("six", "singer6", 33))
 
-        val rvAdapter = StudyingSongRVAdapter(songs, requireContext())
+        val rvAdapter = StudyingSongRVAdapter(studys, requireContext())
         binding.studyRecordRv.adapter = rvAdapter
         binding.studyRecordRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }

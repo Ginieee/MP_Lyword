@@ -8,15 +8,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lyword.Song
 import com.example.lyword.databinding.ItemCompletionSongBinding
+import com.example.lyword.studying.Study
 
-class CompletionSongRVAdapter (var songList: ArrayList<Song>, var context: Context): RecyclerView.Adapter<CompletionSongRVAdapter.ViewHolder>() {
+class CompletionSongRVAdapter (var songList: ArrayList<Study>, var context: Context): RecyclerView.Adapter<CompletionSongRVAdapter.ViewHolder>() {
 
 
     inner class ViewHolder(val binding: ItemCompletionSongBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(songs: Song) {
-            binding.studyingItemSongIv.text = songs.title
-            binding.studyingItemSingerIv.text = songs.singer
-            //binding.studyingItemAlbumIv.setImageResource(songs.coverImg)
+        fun bind(study: Study) {
+            binding.studyingItemSongIv.text = study.title
+            binding.studyingItemSingerIv.text = study.artist
+            //binding.studyingItemAlbumIv.setImageResource(study.album_art)
         }
 
 //        fun setLyrics(songs: Song) {

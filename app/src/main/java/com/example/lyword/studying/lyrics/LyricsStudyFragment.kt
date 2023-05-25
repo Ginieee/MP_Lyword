@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import com.example.lyword.databinding.FragmentStudyLyricsBinding
 import com.example.lyword.studying.Word
 import com.example.lyword.studying.lyrics.separate.*
@@ -16,9 +15,6 @@ import com.example.lyword.studying.lyrics.word.WordDatabase
 import com.example.lyword.studying.lyrics.word.WordEntity
 import kotlinx.coroutines.*
 import org.json.JSONObject
-import org.snu.ids.kkma.ma.MExpression
-import org.snu.ids.kkma.ma.MorphemeAnalyzer
-import org.snu.ids.kkma.ma.Sentence
 import java.io.BufferedReader
 import java.io.DataOutputStream
 import java.io.InputStreamReader
