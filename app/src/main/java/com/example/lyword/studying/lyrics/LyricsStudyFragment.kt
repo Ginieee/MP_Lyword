@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.data.LywordDatabase
 import com.example.lyword.databinding.FragmentStudyLyricsBinding
 import com.example.lyword.studying.Word
 import com.example.lyword.studying.lyrics.separate.*
-import com.example.lyword.data.WordDatabase
 import com.example.lyword.data.entity.WordEntity
 import kotlinx.coroutines.*
 import org.json.JSONObject
@@ -24,7 +24,7 @@ import java.net.URLEncoder
 
 class LyricsStudyFragment  : Fragment(), SeparateView {
     lateinit var binding: FragmentStudyLyricsBinding
-    lateinit var db: WordDatabase
+    lateinit var db: LywordDatabase
 
     private var exampleLyrics: ArrayList<String> = arrayListOf(
                 "두려워한다는 거 (ayy)",
@@ -89,7 +89,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentStudyLyricsBinding.inflate(inflater, container, false)
-        db = WordDatabase.getInstance(requireContext())!!
+        db = LywordDatabase.getInstance(requireContext())!!
 
 
         // 나중에 곡 정보 받아오면 인덱스 설정해서 songIndex에 넣으면 됨
@@ -149,7 +149,11 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
                     }
                     meaning += m.replace(";", "")
                 }
-                db.wordDao().insertWord(WordEntity(word, "notyet", meaning, 0, linenum))
+                val wordEntity = WordEntity()
+                wordEntity.wordSentenceIdx = linenum
+                wordEntity.wordOrigin = word
+                wordEntity.wordPronunciation = "notyet"
+                wordEntity.wordEnglish = meaning
                 wordIndex += 1
                 if (wordIndex == completedCount) {
                     withContext(Dispatchers.Main) {
