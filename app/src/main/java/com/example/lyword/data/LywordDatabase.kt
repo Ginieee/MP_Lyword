@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.lyword.studying.lyrics.word.WordDao
-import com.example.lyword.studying.lyrics.word.WordEntity
+import com.example.lyword.data.dao.WordDao
+import com.example.lyword.data.entity.WordEntity
 
 @Database(
     entities = [WordEntity::class],

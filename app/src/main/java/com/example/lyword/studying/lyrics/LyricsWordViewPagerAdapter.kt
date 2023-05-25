@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lyword.databinding.ItemLyricsWordBinding
-import com.example.lyword.studying.lyrics.word.WordEntity
+import com.example.lyword.data.entity.WordEntity
 
 class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : RecyclerView.Adapter<LyricsWordViewPagerAdapter.ViewHolder>() {
 

@@ -1,8 +1,9 @@
-package com.example.lyword.studying.lyrics.word
+package com.example.lyword.data.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.lyword.data.entity.WordEntity
 
 @Dao
 interface WordDao {
