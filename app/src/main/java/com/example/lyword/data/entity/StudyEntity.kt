@@ -16,7 +16,7 @@ data class StudyEntity(
     var artist : String = "",
 
     @ColumnInfo(name = "album_art")
-    var album_art : Int = 0,
+    var album_art : String = "",
 
     @ColumnInfo(name = "percentage_num")
     var percent : Int = 0,
