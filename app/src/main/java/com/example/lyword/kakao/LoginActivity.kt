@@ -18,8 +18,11 @@ class LoginActivity : AppCompatActivity() {
     lateinit var binding : ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivityLoginBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+
+
+        setContentView(binding.root)
 
         KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
 
@@ -84,6 +87,34 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        setContentView(binding.root)
+
+
+        binding.logoIcIv.animate()
+            .translationXBy(-20f) // X축으로 왼쪽으로 20픽셀 이동
+            .setDuration(100) // 애니메이션 지속 시간 (밀리초)
+            .withEndAction {
+                // 애니메이션 종료 후 실행할 작업
+                binding.logoIcIv.animate()
+                    .translationXBy(40f) // X축으로 오른쪽으로 40픽셀 이동
+                    .setDuration(200) // 애니메이션 지속 시간 (밀리초)
+                    .withEndAction {
+                        // 애니메이션 종료 후 실행할 작업
+                        binding.logoIcIv.animate()
+                            .translationXBy(-40f) // X축으로 왼쪽으로 40픽셀 이동
+                            .translationYBy(-200f) // Y축으로 위로 200픽셀 이동
+                            .setDuration(2000) // 애니메이션 지속 시간 (밀리초)
+                            .withEndAction {
+                                // 애니메이션 종료 후 실행할 작업
+                                binding.logoIcIv.animate()
+                                    .translationYBy(200f) // Y축으로 아래로 200픽셀 이동
+                                    .setDuration(2000) // 애니메이션 지속 시간 (밀리초)
+                                    .start()
+                            }
+                            .start()
+                    }
+                    .start()
+            }
+            .start()
+
     }
 }
