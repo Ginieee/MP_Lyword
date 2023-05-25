@@ -16,4 +16,7 @@ interface StudyDao {
 
     @Query("SELECT * FROM study_table")
     fun getStudyList() : List<StudyEntity>
+
+    @Query("SELECT COUNT(*) FROM StudyEntity WHERE studyId = :studyId")
+    fun hasStudy(studyId: Int)
 }
