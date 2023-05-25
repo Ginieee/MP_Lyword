@@ -1,12 +1,9 @@
 package com.example.lyword.mypage
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.lyword.Song
 import com.example.lyword.databinding.ItemCompletionSongBinding
 import com.example.lyword.studying.Study
 

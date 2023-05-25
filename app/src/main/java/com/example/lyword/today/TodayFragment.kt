@@ -8,12 +8,8 @@ import androidx.fragment.app.Fragment
 import com.example.lyword.R
 import com.example.lyword.databinding.FragmentTodayBinding
 import com.example.lyword.studying.StudyingFragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lyword.MainActivity
-import com.example.lyword.Song
-import com.example.lyword.studying.StudyingSongRVAdapter
 
 class TodayFragment : Fragment() {
     lateinit var binding : FragmentTodayBinding

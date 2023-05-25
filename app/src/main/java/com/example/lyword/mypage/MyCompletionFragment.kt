@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.lyword.R
-import com.example.lyword.Song
 import com.example.lyword.databinding.FragmentMyCompletionBinding
 import com.example.lyword.studying.Study
 
