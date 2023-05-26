@@ -18,6 +18,16 @@ class HomeStudyingRVAdapter : RecyclerView.Adapter<HomeStudyingRVAdapter.ViewHol
     private lateinit var context : Context
     private val studying = ArrayList<StudyEntity>()
 
+    interface RecentItemClickListener {
+        fun onRecendClicked(idx : Long)
+    }
+
+    private lateinit var mItemClickListener : RecentItemClickListener
+
+    fun setMyItemClickListener(itemClickListener : RecentItemClickListener) {
+        mItemClickListener = itemClickListener
+    }
+
     inner class ViewHolder(val binding : ItemRecentStudyBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("UseCompatLoadingForDrawables")
         fun bind(studying : StudyEntity) {
@@ -45,6 +55,10 @@ class HomeStudyingRVAdapter : RecyclerView.Adapter<HomeStudyingRVAdapter.ViewHol
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(studying[position])
+
+        holder.itemView.setOnClickListener {
+            mItemClickListener.onRecendClicked(studying[position].studyId)
+        }
     }
 
     override fun getItemCount(): Int = studying.size

@@ -1,6 +1,7 @@
 package com.example.lyword.home
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,7 @@ import com.example.lyword.data.LywordDatabase
 import com.example.lyword.home.search.SearchActivity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
+import com.example.lyword.studying.lyrics.LyricsActivity
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
 import java.io.IOException
@@ -28,6 +30,8 @@ class HomeFragment : Fragment() {
 
     private var studyingMusic : ArrayList<StudyEntity> = arrayListOf()
     private var popularMusic : ArrayList<PopularMusic> = arrayListOf()
+
+    private lateinit var loadingDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,6 +69,14 @@ class HomeFragment : Fragment() {
             startActivity(intent) //intent 에 명시된 액티비티로 이동
         }
 
+        recentStudyingAdapter.setMyItemClickListener(object : HomeStudyingRVAdapter.RecentItemClickListener {
+            override fun onRecendClicked(idx: Long) {
+                val intent = Intent(context, LyricsActivity::class.java)
+                intent.putExtra("studyId", idx)
+                startActivity(intent)
+            }
+        })
+
         popularMusicAdapter.setMyItemClickListener(object : HomePopularRVAdapter.PopularItemClickListener {
             override fun onPopularClicked(item: PopularMusic) {
                 val intent = Intent(context, PopularMusicDialog::class.java)
@@ -87,6 +99,7 @@ class HomeFragment : Fragment() {
         studyingMusic.clear()
         var studyingListThread : Thread = Thread {
             studyingMusic = db.studyDao.getStudyList() as ArrayList<StudyEntity>
+            studyingMusic.reverse()
             recentStudyingAdapter.addStudying(studyingMusic)
             requireActivity().runOnUiThread {
                 recentStudyingAdapter.notifyDataSetChanged()

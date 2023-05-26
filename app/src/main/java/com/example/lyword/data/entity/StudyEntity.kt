@@ -25,5 +25,8 @@ data class StudyEntity(
     var sentenceList : List<SentenceEntity>? = listOf(),
 
     @ColumnInfo(name = "word_list")
-    var wordList : List<WordEntity>? = listOf()
+    var wordList : List<WordEntity>? = listOf(),
+
+    @ColumnInfo(name = "video_id")
+    var videoId : String = ""
 )
