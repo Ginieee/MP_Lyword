@@ -16,4 +16,7 @@ interface StudyDao {
 
     @Query("SELECT * FROM study_table")
     fun getStudyList() : List<StudyEntity>
+
+    @Query("SELECT * FROM study_table WHERE studyId = :studyId")
+    fun getStudyById(studyId : Long) : StudyEntity
 }

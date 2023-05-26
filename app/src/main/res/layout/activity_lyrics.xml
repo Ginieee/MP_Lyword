@@ -15,64 +15,55 @@
         android:layout_marginTop="17dp"
         android:layout_marginStart="15dp"
         />
+
+    <ImageView
+        android:id="@+id/lyrics_album_iv"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:src="@drawable/example_album_art_1"
+        app:layout_constraintStart_toEndOf="@id/lyrics_back_btn"
+        app:layout_constraintTop_toTopOf="@id/lyrics_back_btn"
+        app:layout_constraintBottom_toBottomOf="@id/lyrics_back_btn"
+        android:layout_marginStart="15dp"
+        />
+
     <TextView
         android:id="@+id/lyrics_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Lyrics"
-        android:textColor="#000000"
-        android:textSize="23sp"
+        android:text="Kitsch"
+        android:textColor="@color/black"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/lyrics_back_btn"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="21dp"
         android:layout_marginStart="15dp"
-        />
+        app:layout_constraintStart_toEndOf="@id/lyrics_album_iv"
+        app:layout_constraintTop_toTopOf="@id/lyrics_album_iv"
+        app:layout_constraintBottom_toTopOf="@id/lyrics_singer_tv"/>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/lyrics_album_cv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintTop_toBottomOf="@id/lyrics_back_btn"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="17dp"
-        android:layout_marginStart="15dp"
-        >
-        <ImageView
-            android:id="@+id/lyrics_album_iv"
-            android:layout_width="96dp"
-            android:layout_height="96dp"
-            android:src="@drawable/default_box"
-            />
-    </androidx.cardview.widget.CardView>
-    <TextView
-        android:id="@+id/lyrics_song_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Song"
-        android:textColor="#000000"
-        android:textSize="19.5sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@id/lyrics_album_cv"
-        app:layout_constraintTop_toTopOf="@id/lyrics_album_cv"
-        app:layout_constraintBottom_toBottomOf="@id/lyrics_album_cv"
-        android:layout_marginStart="15dp"
-        app:layout_constraintVertical_bias="0.4"
-        />
     <TextView
         android:id="@+id/lyrics_singer_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Singer"
-        android:textColor="#000000"
-        android:textSize="13sp"
-        app:layout_constraintStart_toEndOf="@id/lyrics_album_cv"
-        app:layout_constraintTop_toBottomOf="@id/lyrics_song_tv"
-        app:layout_constraintBottom_toBottomOf="@id/lyrics_album_cv"
-        android:layout_marginStart="15dp"
-        app:layout_constraintVertical_bias="0"
-        />
+        android:text="아이브"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@id/lyrics_title_tv"
+        app:layout_constraintTop_toBottomOf="@id/lyrics_title_tv"
+        app:layout_constraintBottom_toBottomOf="@id/lyrics_album_iv"/>
+
+    <LinearLayout
+        android:id="@+id/lyrics_youtube_player_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/lyrics_back_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="17dp"
+        android:orientation="vertical">
+
+        <com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
+            android:id="@+id/lyrics_youtube_player_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/lyrics_menu_tb"
@@ -84,7 +75,7 @@
         app:tabIndicatorColor="#000000"
         app:tabRippleColor="#000000"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
-        app:layout_constraintTop_toBottomOf="@id/lyrics_album_cv"
+        app:layout_constraintTop_toBottomOf="@id/lyrics_youtube_player_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -96,8 +87,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lyrics_menu_tb" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
