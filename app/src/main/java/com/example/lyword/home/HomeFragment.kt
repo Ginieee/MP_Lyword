@@ -1,5 +1,6 @@
 package com.example.lyword.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,9 @@ import com.example.lyword.data.LywordDatabase
 import com.example.lyword.home.search.SearchActivity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
+import java.io.IOException
 
 class HomeFragment : Fragment() {
     lateinit var binding : FragmentHomeBinding
@@ -33,10 +37,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         db = LywordDatabase.getInstance(requireContext())
 
-//        getList()
-//        setAdapter()
         clickListener()
-
 
         return binding.root
     }
@@ -63,8 +64,25 @@ class HomeFragment : Fragment() {
             val intent = Intent( context, SearchActivity::class.java)
             startActivity(intent) //intent 에 명시된 액티비티로 이동
         }
+
+        popularMusicAdapter.setMyItemClickListener(object : HomePopularRVAdapter.PopularItemClickListener {
+            override fun onPopularClicked(item: PopularMusic) {
+                val intent = Intent(context, PopularMusicDialog::class.java)
+                intent.putExtra("title", item.title)
+                intent.putExtra("artist", item.artist)
+                intent.putExtra("albumCover", item.album_art)
+                startActivity(intent)
+            }
+
+        })
     }
 
+    private fun getList() {
+        getStudyingList()
+        getPopularChart()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun getStudyingList() {
         studyingMusic.clear()
         var studyingListThread : Thread = Thread {
@@ -92,38 +110,49 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun getPopularList() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getPopularChart() {
+        var url = "https://www.melon.com/chart/"
         popularMusic.clear()
-        popularMusic.apply {
-            add(
-                PopularMusic(
-                    1,
-                    "Kitsch",
-                    "IVE",
-                    R.drawable.example_album_art_1
-                )
-            )
-            add(
-                PopularMusic(
-                    2,
-                    "손오공",
-                    "세븐틴",
-                    R.drawable.example_album_art_2
-                )
-            )
-            add(
-                PopularMusic(
-                    3,
-                    "Spicy",
-                    "에스파",
-                    R.drawable.example_album_art_3
-                )
-            )
-        }
-    }
 
-    private fun getList() {
-        getStudyingList()
-        getPopularList()
+        val thread = object : Thread() {
+            override fun run() {
+                try {
+                    val doc : org.jsoup.nodes.Document? = Jsoup.connect(url).get()
+                    val elements = doc?.select("tr.lst50")?.subList(0,3)
+
+                    if (elements?.isNotEmpty() == true) {
+                        for (element in elements) {
+                            val rank = element.select("span.rank").text()
+                            val title = element.select("div.ellipsis.rank01 span a").text()
+                            val artist = element.select("div.ellipsis.rank02 span.checkEllipsis a").text()
+                            val albumCover = element.select("a.image_typeAll img").attr("src")
+                            Log.d("GET_POPULAR", "순위 : $rank, 제목 : $title, 가수 : $artist, 커버 : $albumCover")
+
+                            popularMusic.add(
+                                PopularMusic(
+                                    rank.toInt(),
+                                    title,
+                                    artist,
+                                    albumCover
+                                )
+                            )
+                        }
+                    }
+                } catch (e : IOException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+        thread.start()
+
+        try {
+            thread.join()
+        } catch (e : InterruptedException) {
+            e.printStackTrace()
+        }
+
+        popularMusicAdapter.addPopular(popularMusic)
+        popularMusicAdapter.notifyDataSetChanged()
     }
 }

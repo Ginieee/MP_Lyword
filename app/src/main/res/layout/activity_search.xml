@@ -27,13 +27,6 @@
             android:layout_weight="4"
             android:paddingStart="15dp"/>
 
-<!--        <Button-->
-<!--            android:id="@+id/search_header_btn"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:text="검색"-->
-<!--            android:layout_weight="1"/>-->
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
