@@ -69,7 +69,16 @@
             android:name=".studying.lyrics.LyricsWordDialog"
             android:exported="true"
             android:theme="@style/Theme.Transparent" />
-        <activity android:name=".home.search.SearchActivity" />
+        <activity
+            android:name=".home.search.SearchActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".home.PopularMusicDialog"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent"/>
+        <activity
+            android:name=".home.PopularActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

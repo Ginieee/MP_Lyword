@@ -24,6 +24,7 @@ android {
         buildConfigField "String", "SEPARATE_KEY", properties["separate.key"]
         buildConfigField "String", "KAKAO_NATIVE_KEY", properties["kakao.native.key"]
         buildConfigField "String", "KAKAO_KEY", properties["kakao.key"]
+        buildConfigField "String", "YOUTUBE_KEY", properties["youtube.key"]
     }
 
     buildTypes {
@@ -43,6 +44,10 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
+    }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
     }
 }
 
@@ -89,6 +94,15 @@ dependencies {
 
     implementation 'com.kakao.sdk:v2-user:2.10.0'
 
-    // 애니메이션
-    implementation 'com.airbnb.android:lottie:3.7.0'
+    // 유튜브 API
+    implementation 'com.pierfrancescosoffritti.androidyoutubeplayer:core:12.0.0'
+    implementation 'com.google.apis:google-api-services-youtube:v3-rev183-1.22.0'
+    implementation 'com.google.http-client:google-http-client-android:1.39.2'
+    implementation 'com.google.api-client:google-api-client-android:1.32.1'
+    implementation 'com.google.api-client:google-api-client-gson:1.32.1'
+
+    //lottie
+    implementation 'com.airbnb.android:lottie:3.0.7'
+
+
 }
