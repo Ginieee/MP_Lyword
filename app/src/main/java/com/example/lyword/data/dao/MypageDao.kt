@@ -13,4 +13,10 @@ interface MypageDao {
 
     @Update
     fun updateMypage(mypage : MypageEntity)
+
+    @Query("SELECT * FROM MypageEntity ORDER BY mypageId DESC LIMIT 1")
+    suspend fun getLatestMypage(): MypageEntity?
+
+    @Query("UPDATE MypageEntity SET name = :name, introduction = :introduction, profile_img = :profileImg WHERE mypageId = 1")
+    fun updateMypageset(name: String, introduction: String, profileImg: String)
 }

@@ -67,8 +67,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
             android:src="@drawable/ic_profile"
             android:layout_marginTop="26dp"
             android:layout_marginStart="40dp"
@@ -149,6 +149,7 @@
             app:layout_constraintStart_toStartOf="@id/mypage_line"/>
 
         <TextView
+            android:id="@+id/ongoing_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mypage_ongoing_num"
@@ -161,6 +162,7 @@
             app:layout_constraintEnd_toEndOf="@id/mypage_ongoing"/>
 
         <TextView
+            android:id="@+id/comp_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/mypage_comp_num"

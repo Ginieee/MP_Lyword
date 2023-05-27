@@ -16,7 +16,7 @@ data class MypageEntity(
     var introduction : String = "",
 
     @ColumnInfo(name = "profile_img")
-    var profileImg : Int = 0,
+    var profileImg : String = "",
 
     @ColumnInfo(name = "level")
     var level : Int = 0,

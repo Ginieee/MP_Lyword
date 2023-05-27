@@ -15,8 +15,9 @@ class SettingActivity : AppCompatActivity() {
     lateinit var binding : ActivitySettingBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        binding = ActivitySettingBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
+        binding = ActivitySettingBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
 //        val keyHash = Utility.getKeyHash(this)
