@@ -81,6 +81,7 @@ class SearchActivity : AppCompatActivity(), ITunesView {
                 intent.putExtra("title", item.trackName)
                 intent.putExtra("artist", item.artistName)
                 intent.putExtra("albumCover", item.artworkUrl100)
+                intent.putExtra("previewUrl", item.previewUrl)
                 popularDialogResultLauncher.launch(intent)
             }
         })
