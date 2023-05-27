@@ -7,7 +7,7 @@ import com.example.lyword.data.entity.WordEntity
 
 @Dao
 interface WordDao {
-    @Query("Select * From WordEntity")
+    @Query("Select * From word_table")
     fun getWord(): List<WordEntity>
 
     @Insert

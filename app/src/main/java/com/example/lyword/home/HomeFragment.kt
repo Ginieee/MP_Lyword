@@ -1,7 +1,6 @@
 package com.example.lyword.home
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.MainActivity
 import com.example.lyword.R
 import com.example.lyword.data.LywordDatabase
 import com.example.lyword.home.search.SearchActivity
@@ -17,7 +17,6 @@ import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
 import com.example.lyword.studying.lyrics.LyricsActivity
 import org.jsoup.Jsoup
-import org.jsoup.select.Elements
 import java.io.IOException
 
 class HomeFragment : Fragment() {
@@ -30,8 +29,6 @@ class HomeFragment : Fragment() {
 
     private var studyingMusic : ArrayList<StudyEntity> = arrayListOf()
     private var popularMusic : ArrayList<PopularMusic> = arrayListOf()
-
-    private lateinit var loadingDialog : Dialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,6 +64,16 @@ class HomeFragment : Fragment() {
             Log.d("HOME_FRG","검색창 클릭")
             val intent = Intent( context, SearchActivity::class.java)
             startActivity(intent) //intent 에 명시된 액티비티로 이동
+        }
+
+        binding.homeRecentStudyHeaderLayout.setOnClickListener {
+            val bottomNavigationView = (requireActivity() as MainActivity).getBottomNavigation()
+            bottomNavigationView.selectedItemId = R.id.studyingFragment
+        }
+
+        binding.homePopularNowHeaderLayout.setOnClickListener {
+            val intent = Intent(requireContext(), PopularActivity::class.java)
+            startActivity(intent)
         }
 
         recentStudyingAdapter.setMyItemClickListener(object : HomeStudyingRVAdapter.RecentItemClickListener {
@@ -121,6 +128,7 @@ class HomeFragment : Fragment() {
         } catch (e : InterruptedException) {
             e.printStackTrace()
         }
+        Log.d("HOME_FRAGMENT", studyingMusic.toString())
     }
 
     @SuppressLint("NotifyDataSetChanged")

@@ -1,6 +1,8 @@
 package com.example.lyword.home
 
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -77,6 +79,8 @@ class PopularMusicDialog : AppCompatActivity() {
 
     private fun clickListener() {
         binding.popularContentCloseBtn.setOnClickListener {
+            val resultIntent = Intent()
+            setResult(Activity.RESULT_CANCELED, resultIntent)
             finish()
         }
 
@@ -93,17 +97,29 @@ class PopularMusicDialog : AppCompatActivity() {
                 studying.sentenceList = withContext(Dispatchers.IO) {
                     getLyrics(title, artist)
                 }
+                Log.d("SENTENCE_ADD", studying.sentenceList.toString())
                 studying.videoId = withContext(Dispatchers.IO) {
                     searchVideos("$title $artist MV")
                 }
 
+                val thread = Thread {
+                    val sentenceIds = db.sentenceDao.insertSentenceList(studying.sentenceList!!)
+                    studying.sentenceList = db.sentenceDao.getSentencesById(sentenceIds)
+
+                    Log.d("SENTENCE_ADD", sentenceIds.toString())
+                    Log.d("SENTENCE_ADD", studying.sentenceList.toString())
+                }
+                thread.start()
+                thread.join()
+
                 var addStudyThread = Thread {
-                    Log.d("ADD_STUDY", studying.toString())
                     val studyIdx = db.studyDao.insertStudy(studying)
 
                     Log.d("ADD_STUDY", "study idx : $studyIdx")
 
                     runOnUiThread {
+                        val resultIntent = Intent()
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()
                     }
                 }
