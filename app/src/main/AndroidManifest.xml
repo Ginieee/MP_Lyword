@@ -76,6 +76,9 @@
             android:name=".home.PopularMusicDialog"
             android:exported="false"
             android:theme="@style/Theme.Transparent"/>
+        <activity
+            android:name=".home.PopularActivity"
+            android:exported="false"/>
     </application>
 
 </manifest>

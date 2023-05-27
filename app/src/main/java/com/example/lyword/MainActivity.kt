@@ -7,6 +7,7 @@ import com.example.lyword.home.HomeFragment
 import com.example.lyword.mypage.MypageFragment
 import com.example.lyword.studying.StudyingFragment
 import com.example.lyword.today.TodayFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
@@ -55,5 +56,9 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
+    }
+
+    fun getBottomNavigation() : BottomNavigationView {
+        return binding.mainBottomNavi
     }
 }

@@ -1,11 +1,17 @@
 package com.example.lyword.home
 
+import android.animation.ValueAnimator
+import android.app.Activity
 import android.app.Dialog
+import android.content.Intent
+import android.media.AudioAttributes
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
@@ -37,9 +43,12 @@ class PopularMusicDialog : AppCompatActivity() {
     private lateinit var title : String
     private lateinit var artist : String
     private lateinit var albumCover : String
+    private lateinit var previewUrl : String
 
     private val YOUTUBE_KEY = BuildConfig.YOUTUBE_KEY
     private val JSON_FACTORY: JsonFactory = GsonFactory.getDefaultInstance()
+
+    private var mediaPlayer : MediaPlayer? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +65,7 @@ class PopularMusicDialog : AppCompatActivity() {
             title = it.getStringExtra("title") ?: ""
             artist = it.getStringExtra("artist") ?: ""
             albumCover = it.getStringExtra("albumCover") ?: ""
+            previewUrl = it.getStringExtra("previewUrl") ?: ""
         }
 
         setMusic()
@@ -73,10 +83,47 @@ class PopularMusicDialog : AppCompatActivity() {
             .fallback(R.drawable.ic_logo_splash)
             .transform(CenterCrop(), RoundedCorners(10))
             .into(binding.popularContentAlbumIv)
+
+        if (previewUrl.isNotBlank()) {
+            setMediaPlayer()
+        } else {
+            Toast.makeText(this, "재생할 음원 파일이 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun setMediaPlayer() {
+        mediaPlayer = MediaPlayer().apply {
+            setAudioAttributes(AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                .build())
+            setDataSource(previewUrl)
+            prepare()
+//            setVolume(0f,0f)
+
+            isLooping = true
+            start()
+
+//            val fadeInDuration = 1000
+//            val maxVolume = 1.0f
+//
+//            val fadeInAnimator = ValueAnimator.ofFloat(0f, maxVolume).apply {
+//                duration = fadeInDuration.toLong()
+//                addUpdateListener { animation ->
+//                    val volume = animation.animatedValue as Float
+//                    setVolume(volume, volume)
+//                }
+//            }
+//
+//            fadeInAnimator.start()
+        }
+
+        Log.d("MEDIA_PLAYER", "url : $previewUrl")
     }
 
     private fun clickListener() {
         binding.popularContentCloseBtn.setOnClickListener {
+            val resultIntent = Intent()
+            setResult(Activity.RESULT_CANCELED, resultIntent)
             finish()
         }
 
@@ -93,17 +140,29 @@ class PopularMusicDialog : AppCompatActivity() {
                 studying.sentenceList = withContext(Dispatchers.IO) {
                     getLyrics(title, artist)
                 }
+                Log.d("SENTENCE_ADD", studying.sentenceList.toString())
                 studying.videoId = withContext(Dispatchers.IO) {
-                    searchVideos("$title $artist MV")
+                    searchVideos("$title $artist Official")
                 }
 
+                val thread = Thread {
+                    val sentenceIds = db.sentenceDao.insertSentenceList(studying.sentenceList!!)
+                    studying.sentenceList = db.sentenceDao.getSentencesById(sentenceIds)
+
+                    Log.d("SENTENCE_ADD", sentenceIds.toString())
+                    Log.d("SENTENCE_ADD", studying.sentenceList.toString())
+                }
+                thread.start()
+                thread.join()
+
                 var addStudyThread = Thread {
-                    Log.d("ADD_STUDY", studying.toString())
                     val studyIdx = db.studyDao.insertStudy(studying)
 
                     Log.d("ADD_STUDY", "study idx : $studyIdx")
 
                     runOnUiThread {
+                        val resultIntent = Intent()
+                        setResult(Activity.RESULT_OK, resultIntent)
                         finish()
                     }
                 }
@@ -178,4 +237,10 @@ class PopularMusicDialog : AppCompatActivity() {
         result[0].id.videoId
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mediaPlayer?.release()
+        mediaPlayer = null
+        Log.d("POPULAR_DIALOG", "onDestroy")
+    }
 }

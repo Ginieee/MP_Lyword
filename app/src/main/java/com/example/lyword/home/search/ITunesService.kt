@@ -15,7 +15,7 @@ class ITunesService {
     fun getSearchResult(search : String) {
         val iTunesService = getITunesRetrofit().create(ITunesRetroInterface::class.java)
 
-        iTunesService.getSearchResult(search, "KR", "music", "song", 200).enqueue(object : retrofit2.Callback<ITunesResponse> {
+        iTunesService.getSearchResult(search, "music", "musicTrack", "mixTerm", 50, "KR", "Yes").enqueue(object : retrofit2.Callback<ITunesResponse> {
             override fun onResponse(
                 call: Call<ITunesResponse>,
                 response: Response<ITunesResponse>

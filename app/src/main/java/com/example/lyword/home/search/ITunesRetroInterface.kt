@@ -7,9 +7,11 @@ interface ITunesRetroInterface {
     @GET("/search")
     fun getSearchResult(
         @Query("term") term : String,
-        @Query("country") country : String,
         @Query("media") media : String,
         @Query("entity") entity : String,
-        @Query("limit") limit : Int
+        @Query("attribute") attribute : String,
+        @Query("limit") limit : Int,
+        @Query("country") country : String,
+        @Query("explicit") explicit : String
     ) : retrofit2.Call<ITunesResponse>
 }
