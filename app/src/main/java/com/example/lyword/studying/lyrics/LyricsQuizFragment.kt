@@ -38,7 +38,120 @@ LyricsQuizFragment  : Fragment() {
             startActivity(intent)
 
         }
+        binding.quiz10Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 10)
+            startActivity(intent)
 
+        }
+        binding.quiz15Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 15)
+            startActivity(intent)
+
+        }
+        binding.quiz20Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 20)
+            startActivity(intent)
+
+        }
+        binding.quiz25Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 25)
+            startActivity(intent)
+
+        }
+        binding.quiz30Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 30)
+            startActivity(intent)
+
+        }
+        binding.quiz35Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 35)
+            startActivity(intent)
+
+        }
+        binding.quiz40Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 40)
+            startActivity(intent)
+
+        }
+        binding.quiz45Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 45)
+            startActivity(intent)
+
+        }
+        binding.quiz50Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 50)
+            startActivity(intent)
+
+        }
+        binding.quiz55Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 55)
+            startActivity(intent)
+
+        }
+        binding.quiz60Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 60)
+            startActivity(intent)
+
+        }
+        binding.quiz65Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 65)
+            startActivity(intent)
+
+        }
+        binding.quiz70Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 70)
+            startActivity(intent)
+
+        }
+        binding.quiz75Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 75)
+            startActivity(intent)
+
+        }
+        binding.quiz80Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 80)
+            startActivity(intent)
+
+        }
+        binding.quiz85Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 85)
+            startActivity(intent)
+
+        }
+        binding.quiz90Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 90)
+            startActivity(intent)
+
+        }
+        binding.quiz95Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 95)
+            startActivity(intent)
+
+        }
+        binding.quiz100Percent.setOnClickListener {
+            val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
+            intent.putExtra("percent", 100)
+            startActivity(intent)
+
+        }
         return binding.root
     }
 }
