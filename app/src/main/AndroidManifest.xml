@@ -79,6 +79,9 @@
         <activity
             android:name=".home.PopularActivity"
             android:exported="false"/>
+        <activity
+            android:name=".studying.lyrics.SolvingQuizActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
