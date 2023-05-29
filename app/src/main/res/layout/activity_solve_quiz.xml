@@ -19,7 +19,7 @@
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:src="@drawable/keyboard_backspace"
-                android:background="#ffffff"
+                android:background="#00ffffff"
                 />
             <TextView
                 android:layout_width="match_parent"
