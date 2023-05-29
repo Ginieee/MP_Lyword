@@ -84,7 +84,7 @@ class TodayWordRVAdapter(private var todayWords: ArrayList<TodayWord>): Recycler
         romaza_speaker!!.setOnClickListener (
 
             View.OnClickListener { speakOut() }
-            )
+        )
 
         romaza_close_button.setOnClickListener {
 
@@ -99,7 +99,7 @@ class TodayWordRVAdapter(private var todayWords: ArrayList<TodayWord>): Recycler
 
         val text: CharSequence = tmp_lyrics!!.text
         tts!!.setPitch(0.6.toFloat()) // 음성 톤 높이 지정
-        tts!!.setSpeechRate(0.1.toFloat()) // 음성 속도 지정
+        tts!!.setSpeechRate(1.5.toFloat()) // 음성 속도 지정
 
         // 첫 번째 매개변수: 음성 출력을 할 텍스트
         // 두 번째 매개변수: 1. TextToSpeech.QUEUE_FLUSH - 진행중인 음성 출력을 끊고 이번 TTS의 음성 출력

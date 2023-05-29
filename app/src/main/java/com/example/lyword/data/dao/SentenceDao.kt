@@ -1,11 +1,7 @@
 package com.example.lyword.data.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.room.*
 import com.example.lyword.data.entity.SentenceEntity
-import org.snu.ids.kkma.ma.Sentence
 
 @Dao
 interface SentenceDao {
@@ -17,4 +13,10 @@ interface SentenceDao {
 
     @Update
     fun updateSentence(sentence : SentenceEntity)
+
+    @Insert
+    fun insertSentenceList(list : List<SentenceEntity>) : List<Long>
+
+    @Query("SELECT * FROM sentence_table WHERE sentenceId IN (:ids)")
+    fun getSentencesById(ids : List<Long>) : List<SentenceEntity>
 }

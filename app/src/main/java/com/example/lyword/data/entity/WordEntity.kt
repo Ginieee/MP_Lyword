@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity(tableName = "word_table")
 data class WordEntity(
     @PrimaryKey(autoGenerate = true)
     var wordId : Long = 0,

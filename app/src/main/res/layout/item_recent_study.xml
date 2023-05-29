@@ -25,27 +25,32 @@
     
     <LinearLayout
         android:id="@+id/item_info_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="@id/item_percent_iv"
         app:layout_constraintBottom_toBottomOf="@id/item_percent_iv"
         app:layout_constraintStart_toEndOf="@id/item_percent_iv"
+        app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="10dp"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/item_title_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Title"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textSize="15sp"
             android:textColor="@color/black"/>
 
         <TextView
             android:id="@+id/item_artist_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="artist"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textSize="10sp"
             android:textColor="@color/black"/>
 

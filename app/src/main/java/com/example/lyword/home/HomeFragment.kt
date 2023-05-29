@@ -1,18 +1,27 @@
 package com.example.lyword.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.MainActivity
 import com.example.lyword.R
 import com.example.lyword.data.LywordDatabase
 import com.example.lyword.home.search.SearchActivity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
+import com.example.lyword.home.search.ITunesResult
+import com.example.lyword.home.search.ITunesService
+import com.example.lyword.home.search.ITunesView
+import com.example.lyword.studying.lyrics.LyricsActivity
+import org.jsoup.Jsoup
+import java.io.IOException
 
 class HomeFragment : Fragment() {
     lateinit var binding : FragmentHomeBinding
@@ -25,6 +34,11 @@ class HomeFragment : Fragment() {
     private var studyingMusic : ArrayList<StudyEntity> = arrayListOf()
     private var popularMusic : ArrayList<PopularMusic> = arrayListOf()
 
+    private var title : String = ""
+    private var artist : String = ""
+    private var albumCover : String = ""
+    private var previewUrl : String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,10 +47,7 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         db = LywordDatabase.getInstance(requireContext())
 
-//        getList()
-//        setAdapter()
         clickListener()
-
 
         return binding.root
     }
@@ -63,12 +74,61 @@ class HomeFragment : Fragment() {
             val intent = Intent( context, SearchActivity::class.java)
             startActivity(intent) //intent 에 명시된 액티비티로 이동
         }
+
+        binding.homeRecentStudyHeaderLayout.setOnClickListener {
+            val bottomNavigationView = (requireActivity() as MainActivity).getBottomNavigation()
+            bottomNavigationView.selectedItemId = R.id.studyingFragment
+        }
+
+        binding.homePopularNowHeaderLayout.setOnClickListener {
+            val intent = Intent(requireContext(), PopularActivity::class.java)
+            startActivity(intent)
+        }
+
+        recentStudyingAdapter.setMyItemClickListener(object : HomeStudyingRVAdapter.RecentItemClickListener {
+            override fun onRecendClicked(idx: Long) {
+                val intent = Intent(context, LyricsActivity::class.java)
+                intent.putExtra("studyId", idx)
+                startActivity(intent)
+            }
+        })
+
+        popularMusicAdapter.setMyItemClickListener(object : HomePopularRVAdapter.PopularItemClickListener {
+            override fun onPopularClicked(item: PopularMusic) {
+
+//                binding.homeLoadingLv.visibility = View.VISIBLE
+
+                title = item.title
+                artist = item.artist
+                albumCover = item.album_art
+
+                val intent = Intent(context, PopularMusicDialog::class.java)
+                intent.putExtra("title", title)
+                intent.putExtra("artist", artist)
+                intent.putExtra("albumCover", albumCover)
+                intent.putExtra("previewUrl", "")
+                startActivity(intent)
+
+//                var search = (item.title + " " + item.artist)
+//                search = search.replace(" ", "+")
+//                getSearchResult(search)
+//                Log.d("POPULAR_URL", search)
+            }
+
+        })
     }
 
+    private fun getList() {
+        getStudyingList()
+        getPopularChart()
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
     private fun getStudyingList() {
         studyingMusic.clear()
         var studyingListThread : Thread = Thread {
             studyingMusic = db.studyDao.getStudyList() as ArrayList<StudyEntity>
+            studyingMusic.reverse()
             recentStudyingAdapter.addStudying(studyingMusic)
             requireActivity().runOnUiThread {
                 recentStudyingAdapter.notifyDataSetChanged()
@@ -90,40 +150,89 @@ class HomeFragment : Fragment() {
         } catch (e : InterruptedException) {
             e.printStackTrace()
         }
+        Log.d("HOME_FRAGMENT", studyingMusic.toString())
     }
 
-    private fun getPopularList() {
+    @SuppressLint("NotifyDataSetChanged")
+    private fun getPopularChart() {
+        var url = "https://www.melon.com/chart/"
         popularMusic.clear()
-        popularMusic.apply {
-            add(
-                PopularMusic(
-                    1,
-                    "Kitsch",
-                    "IVE",
-                    R.drawable.example_album_art_1
-                )
-            )
-            add(
-                PopularMusic(
-                    2,
-                    "손오공",
-                    "세븐틴",
-                    R.drawable.example_album_art_2
-                )
-            )
-            add(
-                PopularMusic(
-                    3,
-                    "Spicy",
-                    "에스파",
-                    R.drawable.example_album_art_3
-                )
-            )
+
+        val thread = object : Thread() {
+            override fun run() {
+                try {
+                    val doc : org.jsoup.nodes.Document? = Jsoup.connect(url).get()
+                    val elements = doc?.select("tr.lst50")?.subList(0,3)
+
+                    if (elements?.isNotEmpty() == true) {
+                        for (element in elements) {
+                            val rank = element.select("span.rank").text()
+                            val title = element.select("div.ellipsis.rank01 span a").text()
+                            val artist = element.select("div.ellipsis.rank02 span.checkEllipsis a").text()
+                            val albumCover = element.select("a.image_typeAll img").attr("src")
+                            Log.d("GET_POPULAR", "순위 : $rank, 제목 : $title, 가수 : $artist, 커버 : $albumCover")
+
+                            popularMusic.add(
+                                PopularMusic(
+                                    rank.toInt(),
+                                    title,
+                                    artist,
+                                    albumCover
+                                )
+                            )
+                        }
+                    }
+                } catch (e : IOException) {
+                    e.printStackTrace()
+                }
+            }
         }
+        thread.start()
+
+        try {
+            thread.join()
+        } catch (e : InterruptedException) {
+            e.printStackTrace()
+        }
+
+        popularMusicAdapter.addPopular(popularMusic)
+        popularMusicAdapter.notifyDataSetChanged()
     }
 
-    private fun getList() {
-        getStudyingList()
-        getPopularList()
-    }
+//    private fun getSearchResult(search : String) {
+//        val iTunesService = ITunesService()
+//        iTunesService.setITunesView(this)
+//
+//        iTunesService.getSearchResult(search)
+//    }
+//
+//    override fun onSearchITunesSuccess(count: Int, result: List<ITunesResult>?) {
+//        if (count == 100) {
+//            Toast.makeText(context, "오류가 발생하였습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+//        }
+//        else if (count > 0) {
+//            Log.d("SEARCH_ACT", result.toString())
+//            if (result?.isNotEmpty() == true) {
+//                previewUrl = result[0].previewUrl
+//
+//                val intent = Intent(context, PopularMusicDialog::class.java)
+//                intent.putExtra("title", title)
+//                intent.putExtra("artist", artist)
+//                intent.putExtra("albumCover", albumCover)
+//                intent.putExtra("previewUrl", previewUrl)
+//                startActivity(intent)
+//            }
+//        } else {
+//            previewUrl = ""
+//
+//            val intent = Intent(context, PopularMusicDialog::class.java)
+//            intent.putExtra("title", title)
+//            intent.putExtra("artist", artist)
+//            intent.putExtra("albumCover", albumCover)
+//            intent.putExtra("previewUrl", previewUrl)
+//            startActivity(intent)
+//        }
+//
+//        binding.homeLoadingLv.visibility = View.GONE
+//    }
 }

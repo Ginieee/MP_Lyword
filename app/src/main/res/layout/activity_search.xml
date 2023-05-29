@@ -27,14 +27,19 @@
             android:layout_weight="4"
             android:paddingStart="15dp"/>
 
-<!--        <Button-->
-<!--            android:id="@+id/search_header_btn"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="40dp"-->
-<!--            android:text="검색"-->
-<!--            android:layout_weight="1"/>-->
-
     </LinearLayout>
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/search_loading_lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:lottie_rawRes="@raw/loading"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/search_header_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_result_rv"
@@ -46,22 +51,5 @@
         android:layout_marginHorizontal="30dp"
         tools:listitem="@layout/item_popular_now"
         android:paddingBottom="20dp"/>
-
-    <TextView
-        android:id="@+id/search_select_tv"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:text="Study this music"
-        android:background="@drawable/bg_rectangle__main_10dp"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginVertical="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:visibility="gone"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

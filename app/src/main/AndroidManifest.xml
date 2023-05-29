@@ -22,6 +22,20 @@
         <activity
             android:name=".kakao.LoginActivity"
             android:exported="false" />
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kakaoc89969bc031b5bd1e49d880b3bcd0ad7" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".mypage.SettingActivity"
@@ -55,7 +69,19 @@
             android:name=".studying.lyrics.LyricsWordDialog"
             android:exported="true"
             android:theme="@style/Theme.Transparent" />
-        <activity android:name=".home.search.SearchActivity" />
+        <activity
+            android:name=".home.search.SearchActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".home.PopularMusicDialog"
+            android:exported="false"
+            android:theme="@style/Theme.Transparent"/>
+        <activity
+            android:name=".home.PopularActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".studying.lyrics.SolvingQuizActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
