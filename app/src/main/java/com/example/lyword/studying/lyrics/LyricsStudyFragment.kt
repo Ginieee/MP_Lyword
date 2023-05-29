@@ -89,7 +89,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentStudyLyricsBinding.inflate(inflater, container, false)
-        db = LywordDatabase.getInstance(requireContext())!!
+        db = LywordDatabase.getInstance(requireContext())
 
         // 나중에 곡 정보 받아오면 인덱스 설정해서 songIndex에 넣으면 됨
         val songIndex = 0;
@@ -99,7 +99,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         return binding.root
     }
 
-    // RecyclerView 세팅
+    // 가사 RecyclerView 세팅
     private fun initRV(){
         val lyrics = ArrayList<Lyrics>()
         val translateCount = exampleLyrics.size
@@ -120,11 +120,12 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
             translate.execute()
         }
     }
-    // 단어 객체 만들고 룸디비에 저장하는 과정
+    // 단어를 만들기 위해 해당 노래 데이터가 룸디비에 존재하고 있는지 확인 후 조건에 따라 형태소 분석 함수 호출
     @OptIn(DelicateCoroutinesApi::class)
     private fun createWords(songIndex: Int){
         GlobalScope.launch(Dispatchers.IO) {
-            if (db.studyDao. <= 0) {
+            // 해당 ID의 노래가 룸디비에 저장되어 있지 않은 경우
+            if (db.studyDao.hasStudy(songIndex) < 1) {
                 Log.d("LyricsStudy-createWords", songIndex.toString())
                 for (i in 0 until exampleLyrics.size) {
                     getSeparateLyrics(exampleLyrics[i], i)
@@ -132,34 +133,34 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
             }
         }
     }
+    // 각 단어들의 뜻과 발음 불러와서 룸디비에 최종 저장
     @OptIn(DelicateCoroutinesApi::class)
     private fun initWords(separateWord: ArrayList<String>, linenum: Int) {
         var wordIndex = 0
-        var completedCount = separateWord.size
+        val completedCount = separateWord.size
+        var wordEntities = ArrayList<WordEntity>()
 
-        GlobalScope.launch(Dispatchers.IO) {
-            for (word in separateWord) {
-                val translate2 = Trans(word)
-                val meaningList: ArrayList<String> = translate2.execute().get()
-                var meaning = ""
-                for (m in meaningList) {
-                    if (meaning != "") {
-                        meaning += ", "
-                    }
-                    meaning += m.replace(";", "")
+        for (word in separateWord) {
+            val translate2 = Trans(word)
+            val meaningList: ArrayList<String> = translate2.execute().get()
+            var meaning = ""
+            for (m in meaningList) {
+                if (meaning != "") {
+                    meaning += ", "
                 }
-                val wordEntity = WordEntity()
-                wordEntity.wordSentenceIdx = linenum
-                wordEntity.wordOrigin = word
-                wordEntity.wordPronunciation = "notyet"
-                wordEntity.wordEnglish = meaning
-                wordIndex += 1
-                if (wordIndex == completedCount) {
-                    withContext(Dispatchers.Main) {
-                        Log.d("Lyrics - Word", wordConverted.toString())
-                    }
-                }
+                meaning += m.replace(";", "")
             }
+            val wordEntity = WordEntity()
+            wordEntity.wordSentenceIdx = linenum
+            wordEntity.wordOrigin = word
+            wordEntity.wordPronunciation = "notyet"
+            wordEntity.wordEnglish = meaning
+            wordIndex += 1
+            wordEntities.add(wordEntity)
+
+        }
+        CoroutineScope(Dispatchers.IO).launch {
+            db.wordDao.insertWords(wordEntities)
         }
     }
 
@@ -178,7 +179,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         )
         separateService.getSeparateLyrics(request, index)
     }
-    // 형태소 분석 결과 받아오기
+    // 형태소 분석 결과 받아오는 인터페이스 내 함수
     override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int) {
         var separateWord = ArrayList<String>()
         for (i in result){
@@ -190,6 +191,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
             }
         }
         Log.d("Lyrics - getWord", separateWord.toString())
+        // API 호출이 완료되었을 때, 단어를 하나씩 저장한다
         initWords(separateWord, index)
     }
     // 단어 번역

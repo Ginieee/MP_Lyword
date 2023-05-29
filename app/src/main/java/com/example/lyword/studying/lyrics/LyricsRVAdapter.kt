@@ -30,13 +30,14 @@ class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): 
                 setTextColorDefault()
             }
         }
+        // 선택된 position에 대한 설정
         private fun setTextColorSelected() {
             binding.itemLyricsLyTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsPronTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsTransTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsStartIv.visibility = View.VISIBLE
         }
-
+        // 그 외의 position 값들은 전부 기본 세팅
         private fun setTextColorDefault() {
             binding.itemLyricsLyTv.setTextColor(ContextCompat.getColor(context, R.color.black))
             binding.itemLyricsPronTv.setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -46,6 +47,7 @@ class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): 
 
         fun startDialog() {
             val intent = Intent(context, LyricsWordDialog::class.java)
+            intent.putExtra("lyricsPosition", selectedItem)
             (context as Activity).startActivityForResult(intent,101)
         }
     }
@@ -60,18 +62,11 @@ class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(lyricsList[position])
 
-        holder.binding.itemLyricsLyTv.setOnClickListener {
+        holder.binding.itemLyricsLl.setOnClickListener{
             selectedItem = holder.adapterPosition
             notifyDataSetChanged()
         }
-        holder.binding.itemLyricsPronTv.setOnClickListener {
-            selectedItem = holder.adapterPosition
-            notifyDataSetChanged()
-        }
-        holder.binding.itemLyricsTransTv.setOnClickListener {
-            selectedItem = holder.adapterPosition
-            notifyDataSetChanged()
-        }
+
         holder.binding.itemLyricsStartIv.setOnClickListener {
             holder.startDialog()
         }

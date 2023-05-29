@@ -27,7 +27,7 @@ class StudyingFragment : Fragment() {
 
     private fun initRV(){
         val songs = ArrayList<StudyEntity>()
-        songs.add(StudyEntity(0, "나나", "울랄라", 0, 0, listOf(), listOf() ))
+        songs.add(StudyEntity(0, "나나", "울랄라", "", 0, listOf(), listOf() ))
         val rvAdapter = StudyingSongRVAdapter(songs, requireContext())
         binding.studyRecordRv.adapter = rvAdapter
         binding.studyRecordRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
