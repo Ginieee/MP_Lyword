@@ -12,17 +12,18 @@ import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lyword.R
+import com.example.lyword.data.entity.SentenceEntity
 import com.example.lyword.databinding.ItemLyricsBinding
 
-class LyricsRVAdapter(var lyricsList: ArrayList<Lyrics>, var context: Context): RecyclerView.Adapter<LyricsRVAdapter.ViewHolder>() {
+class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Context): RecyclerView.Adapter<LyricsRVAdapter.ViewHolder>() {
 
     val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-    private var selectedItem = -1
+    private var selectedItem = 0
     inner class ViewHolder(val binding: ItemLyricsBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(lyrics: Lyrics) {
-            binding.itemLyricsLyTv.text = lyrics.ly
-            binding.itemLyricsPronTv.text = lyrics.pron
-            binding.itemLyricsTransTv.text = lyrics.trans
+        fun bind(lyrics: SentenceEntity) {
+            binding.itemLyricsLyTv.text = lyrics.sentenceOrigin
+            binding.itemLyricsPronTv.text = lyrics.sentencePronunciation
+            binding.itemLyricsTransTv.text = lyrics.sentenceEnglish
 
             if (adapterPosition == selectedItem) {
                 setTextColorSelected()

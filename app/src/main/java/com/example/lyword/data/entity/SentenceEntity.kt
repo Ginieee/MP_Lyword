@@ -13,8 +13,8 @@ data class SentenceEntity (
     var sentenceOrigin : String = "",
 
     @ColumnInfo(name = "sentence_pronunciation")
-    var wordPronunciation : String = "",
+    var sentencePronunciation : String = "",
 
     @ColumnInfo(name = "sentence_english")
-    var wordEnglish : String = ""
+    var sentenceEnglish : String = ""
 )

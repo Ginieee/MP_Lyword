@@ -10,7 +10,7 @@ interface WordDao {
     @Query("Select * From word_table")
     fun getWord(): List<WordEntity>
 
-    @Query("SELECT * FROM WordEntity WHERE word_sentence_idx = :lyricsId")
+    @Query("SELECT * FROM word_table WHERE word_sentence_idx = :lyricsId")
     fun getWordByLyricsId(lyricsId: Int): List<WordEntity>
 
     @Insert

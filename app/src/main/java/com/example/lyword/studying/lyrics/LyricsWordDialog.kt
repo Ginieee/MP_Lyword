@@ -54,12 +54,14 @@ class LyricsWordDialog : AppCompatActivity() {
             val wordList = db.wordDao.getWordByLyricsId(lyricsPosition)
             val allWord = db.wordDao.getWord()
             val songList = db.studyDao.getStudyList()
-            Log.d("lyricsWordDialog - s", songList.toString())
-            Log.d("lyricsWordDialog - all", allWord.toString())
+
             Log.d("lyricsWordDialog - Idx", wordList.toString())
-            wordAdapter = LyricsWordViewPagerAdapter(wordList)
-            binding.dialogLyricsVp.adapter = wordAdapter
-            binding.dialogLyricsVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            GlobalScope.launch(Dispatchers.Main) {
+                wordAdapter = LyricsWordViewPagerAdapter(wordList)
+                binding.dialogLyricsVp.adapter = wordAdapter
+                binding.dialogLyricsVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
+            }
+
         }
 
     }

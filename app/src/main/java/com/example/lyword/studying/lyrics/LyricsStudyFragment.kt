@@ -8,12 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.room.Transaction
 import com.example.lyword.data.LywordDatabase
+import com.example.lyword.data.entity.SentenceEntity
+import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentStudyLyricsBinding
 import com.example.lyword.studying.Word
 import com.example.lyword.studying.lyrics.separate.*
 import com.example.lyword.data.entity.WordEntity
 import kotlinx.coroutines.*
+import net.crizin.KoreanCharacter
+import net.crizin.KoreanRomanizer
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.DataOutputStream
@@ -25,63 +30,19 @@ import java.net.URLEncoder
 class LyricsStudyFragment  : Fragment(), SeparateView {
     lateinit var binding: FragmentStudyLyricsBinding
     lateinit var db: LywordDatabase
+    var updateSentence = mutableListOf<SentenceEntity>()
+    var updateWord = mutableListOf<WordEntity>()
 
-    private var exampleLyrics: ArrayList<String> = arrayListOf(
-                "두려워한다는 거 (ayy)",
-                "나도 알아 우린" ,
-                "석양이 지나가고",
-                "밤의 시작 앞에 (yeah, yeah)",
-                "밤은 낮과 달리 어두워",
-                "지금 해가 지면 우리는 더한 추위를 겪어",
-                "하지만 다 알고 있었잖아 굳이 뭘 더" ,
-                "걱정하는 거야, 우리는 별이잖아 서로의" ,
-                "둘이 손을 맞잡고서" ,
-                "서로 등을 맞대고서" ,
-                "한 걸음씩 이렇게 가기로 해, oh, na" ,
-                "어떤 어둠 속을 걸을지라도 (oh, whoa, whoa)" ,
-                "사방이 막힌 길뿐일지라도 (I let you know, yeah)" ,
-//                "내가 했던 말 기억해" ,
-//                "지금 잡은 손 놓치지 않아" ,
-//                "너에게 난 약속해" ,
-//                "No one take you down (whoa-oh, whoa-oh, ayy)" ,
-//                "너와 나의 promise (ooh, ooh)" ,
-//                "No one take you down (whoa-oh, whoa-oh, ayy)" ,
-//                "Don't worry, I'll be there (별처럼 빛나)" ,
-//                "지나리 언젠간 닿겠지" ,
-//                "꽃이 지고 또 어둠이 널 삼키겠지" ,
-//                "빛을 밝히리, 새로운 싹이 트겠지" ,
-//                "이 순간에, 불빛이 우릴 감싸주겠지" ,
-//                "우리 우리를 향한 시린 바람 다 막아 (ooh)" ,
-//                "줄 수는 없어도 하나 꼭 약속, 항상 안아 더 꽉 (ooh)" ,
-//                "내 온기가 너에게 느껴질 수 있게" ,
-//                "해가 뜰 때쯤, 어깨너머로 빛을 보여줄게" ,
-//                "어떤 어둠 속을 걸을지라도 (oh, whoa, whoa)" ,
-//                "사방이 막힌 길뿐일지라도 (I let you know, yeah)" ,
-//                "내가 했던 말 기억해" ,
-//                "지금 잡은 손 놓치지 않아" ,
-//                "너에게 난 약속해" ,
-//                "No one take you down (whoa-oh, whoa-oh, ayy)" ,
-//                "너와 나의 promise (ooh, ooh)" ,
-//                "No one take you down (whoa-oh, whoa-oh, ayy)" ,
-//                "Don't worry, I'll be there (별처럼 빛나)" ,
-//                "피어난 노을에" ,
-//                "석양이 부르네" ,
-//                "이곳에 꽃이 필 때" ,
-//                "이 공간은 붉은빛으로 물드네" ,
-//                "나와 함께 맞이하게 될" ,
-//                "미래를 기대해" ,
-//                "막을 수 없는 걸" ,
-//                "No one take you down (whoa-oh, whoa-oh, ayy)" ,
-//                "너와 나의 promise (너와 나의 promise, ooh)" ,
-//                "No one take you down (whoa-oh, whoa-oh, ayy)" ,
-//                "Don't worry, I'll be there (별처럼 빛나)" ,
-//                "La-la-la-la, la-la-la-la" ,
-//                "La-la-la-la (no one take you down)" ,
-//                "La-la-la-la, la-la-la-la (whoa-oh, whoa-oh, ayy)" ,
-//                "La-la-la-la (no one take you down)"
-    )
-
-    private var wordConverted = ArrayList<Word>()
+    // 생성자를 통해 studyId를 전달받음
+    companion object {
+        fun newInstance(studyId: Long): LyricsStudyFragment {
+            val fragment = LyricsStudyFragment()
+            val args = Bundle()
+            args.putLong("studyId", studyId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,50 +52,84 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
         binding = FragmentStudyLyricsBinding.inflate(inflater, container, false)
         db = LywordDatabase.getInstance(requireContext())
 
-        // 나중에 곡 정보 받아오면 인덱스 설정해서 songIndex에 넣으면 됨
-        val songIndex = 0;
-        createWords(songIndex)
-        initRV()
+        // 전달받은 studyId를 사용하여 필요한 작업 수행
+        val studyId = arguments?.getLong("studyId")
+
+
+        if (studyId != null) {
+            createSentencesAndWords(studyId)
+        }
 
         return binding.root
     }
 
-    // 가사 RecyclerView 세팅
-    private fun initRV(){
-        val lyrics = ArrayList<Lyrics>()
-        val translateCount = exampleLyrics.size
-        var completedCount = 0
-
-        for(li in exampleLyrics){
-            val translate = Translate(li, object : Translate.TranslateCallback {
-                override fun onTranslateResult(result: String) {
-                    lyrics.add(Lyrics(completedCount, li, "tbc", result))
-                    completedCount++
-                    if (completedCount == translateCount) {
-                        val rvAdapter = LyricsRVAdapter(lyrics, requireContext())
-                        binding.studyLyricsRv.adapter = rvAdapter
-                        binding.studyLyricsRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                    }
-                }
-            })
-            translate.execute()
+    // 기존에 저장되어 있던 노래인지 확인하기
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun createSentencesAndWords(studyId: Long){
+        GlobalScope.launch(Dispatchers.IO) {
+            val study = db.studyDao.getStudyById(studyId)
+            createSentences(studyId)
+            createWords(studyId)
         }
     }
-    // 단어를 만들기 위해 해당 노래 데이터가 룸디비에 존재하고 있는지 확인 후 조건에 따라 형태소 분석 함수 호출
+
+    // 가사 RecyclerView 세팅
     @OptIn(DelicateCoroutinesApi::class)
-    private fun createWords(songIndex: Int){
+    private suspend fun initSentenceRV(studyId: Long) {
+        var lyrics = ArrayList<SentenceEntity>()
         GlobalScope.launch(Dispatchers.IO) {
-            // 해당 ID의 노래가 룸디비에 저장되어 있지 않은 경우
-            if (db.studyDao.hasStudy(songIndex) < 1) {
-                Log.d("LyricsStudy-createWords", songIndex.toString())
-                for (i in 0 until exampleLyrics.size) {
-                    getSeparateLyrics(exampleLyrics[i], i)
-                }
+            lyrics = db.studyDao.getStudyById(studyId).sentenceList as ArrayList
+            Log.d("LSFragment - initRV", lyrics.toString())
+        }
+        withContext(Dispatchers.Main) {
+            val rvAdapter = LyricsRVAdapter(lyrics, requireContext())
+            binding.studyLyricsRv.adapter = rvAdapter
+            binding.studyLyricsRv.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        }
+    }
+    // 한 문장씩 정보 세팅
+    @OptIn(DelicateCoroutinesApi::class)
+    fun createSentences(studyId: Long){
+        GlobalScope.launch(Dispatchers.IO) {
+            val lyrics = db.studyDao.getStudyById(studyId).sentenceList as ArrayList
+            for (i in 0 until lyrics.size) {
+                setLyrics(lyrics[i], studyId, i == lyrics.size -1)
             }
         }
     }
-    // 각 단어들의 뜻과 발음 불러와서 룸디비에 최종 저장
+    // 형태소 분석 함수 호출
     @OptIn(DelicateCoroutinesApi::class)
+    private fun createWords(studyId: Long){
+        GlobalScope.launch(Dispatchers.IO) {
+            val lyrics = db.studyDao.getStudyById(studyId).sentenceList as ArrayList
+            for (i in 0 until lyrics.size) {
+                getSeparateLyrics(lyrics[i].sentenceOrigin, i)
+            }
+        }
+    }
+
+    @Transaction
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun setLyrics(line: SentenceEntity, studyId: Long, isFinished: Boolean){
+        val pron = KoreanRomanizer.romanize(line.sentenceOrigin, KoreanCharacter.ConsonantAssimilation.Progressive)
+        val translate = Translate(line.sentenceOrigin, object : Translate.TranslateCallback {
+            override fun onTranslateResult(result: String) {
+                GlobalScope.launch {
+                    Log.d("LSFragment - setLyrics", pron+result)
+                    updateSentence.add(SentenceEntity(line.sentenceId, line.sentenceOrigin, pron, result))
+                    if (isFinished){
+                        Log.d("LSFragment - createS", "RVSetting")
+                        val study = db.studyDao.getStudyById(studyId)
+                        db.studyDao.updateStudy(StudyEntity(study.studyId, study.title, study.artist, study.album_art, study.percent, updateSentence, updateWord, study.videoId))
+                        initSentenceRV(studyId)
+                    }
+                }
+            }
+        })
+        translate.execute()
+    }
+    // 각 단어들의 뜻과 발음 불러와서 객체에 저장
     private fun initWords(separateWord: ArrayList<String>, linenum: Int) {
         var wordIndex = 0
         val completedCount = separateWord.size
@@ -156,11 +151,7 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
             wordEntity.wordPronunciation = "notyet"
             wordEntity.wordEnglish = meaning
             wordIndex += 1
-            wordEntities.add(wordEntity)
-
-        }
-        CoroutineScope(Dispatchers.IO).launch {
-            db.wordDao.insertWords(wordEntities)
+            updateWord.add(wordEntity)
         }
     }
 
