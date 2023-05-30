@@ -12,10 +12,9 @@ import androidx.room.Transaction
 import com.example.lyword.data.LywordDatabase
 import com.example.lyword.data.entity.SentenceEntity
 import com.example.lyword.data.entity.StudyEntity
-import com.example.lyword.databinding.FragmentStudyLyricsBinding
-import com.example.lyword.studying.Word
 import com.example.lyword.studying.lyrics.separate.*
 import com.example.lyword.data.entity.WordEntity
+import com.example.lyword.databinding.FragmentStudyLyricsBinding
 import kotlinx.coroutines.*
 import net.crizin.KoreanCharacter
 import net.crizin.KoreanRomanizer
