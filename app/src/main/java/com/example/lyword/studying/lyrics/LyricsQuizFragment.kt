@@ -24,13 +24,25 @@ class
 LyricsQuizFragment  : Fragment() {
     lateinit var binding: FragmentStudyQuizBinding
 
+    // 생성자를 통해 studyId를 전달받음
+    companion object {
+        fun newInstance(studyId: Long): LyricsStudyFragment {
+            val fragment = LyricsStudyFragment()
+            val args = Bundle()
+            args.putLong("studyId", studyId)
+            fragment.arguments = args
+            return fragment
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentStudyQuizBinding.inflate(inflater, container, false)
-
+        // 전달받은 studyId를 사용하여 필요한 작업 수행
+        val studyId = arguments?.getLong("studyId")
 
         binding.quiz5Percent.setOnClickListener {
             val intent = Intent(requireContext(), SolvingQuizActivity::class.java)
