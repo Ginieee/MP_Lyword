@@ -9,7 +9,7 @@ class LyricsViewpagerAdapter(fragment: LyricsActivity, private val studyId: Long
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> LyricsStudyFragment.newInstance(studyId)
-            else -> LyricsQuizFragment()
+            else -> LyricsQuizFragment.newInstance(studyId)
         }
     }
 }
