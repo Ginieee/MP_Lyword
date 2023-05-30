@@ -161,8 +161,11 @@ class SolvingQuizActivity : AppCompatActivity() {
     var percent: Int = 0
     var totalCount : Int = 0
     var count : Int = 0
+
     lateinit var db : LywordDatabase
     private var solveQuiz : List<WordEntity> = arrayListOf()
+    private var changeStudy : List<StudyEntity> = emptyList()
+
     val randomIndices = mutableListOf<Int>()
     val randomValues = mutableListOf<WordEntity>()
     var quizContents: List<WordEntity> = mutableListOf()
@@ -243,6 +246,13 @@ class SolvingQuizActivity : AppCompatActivity() {
                     showCustomDialog()
 
 
+                    /* 정답시 퍼센트를 올리는 부분
+
+
+                    upgradePercentFromDB(?)
+
+                    */
+
                 }else{ // 오답
                     resultCheck=0
                     showCustomDialog()
@@ -300,8 +310,12 @@ class SolvingQuizActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    // 퀴즈에 사용할 단어를 db에서 가져오는 부분
     private fun getWordFromDB() {
         val thread : Thread = Thread {
+
+
+            // solveQuiz = db.wordDao.getWordBySentenceIdx(7)
             solveQuiz = db.wordDao.getWord()
         }
         thread.start()
@@ -312,4 +326,24 @@ class SolvingQuizActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
+    // 퀴즈에서 정답시에 studyId를 사용해서 해당 StudyEntity의 퍼센트를 올리는 부분
+    private fun upgradePercentFromDB(tmpStudyId: Long) {
+        val thread : Thread = Thread {
+
+            val studyId = tmpStudyId
+            val studyEntity = db.studyDao.getStudyById(studyId)
+            studyEntity.percent += 5
+            db.studyDao.updateStudy(studyEntity)
+
+        }
+        thread.start()
+
+        try {
+            thread.join()
+        } catch (e : InterruptedException) {
+            e.printStackTrace()
+        }
+    }
+
 }
