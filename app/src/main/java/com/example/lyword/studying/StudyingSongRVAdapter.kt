@@ -6,6 +6,10 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.example.lyword.R
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.studying.lyrics.LyricsActivity
 import com.example.lyword.databinding.ItemStudyingSongBinding
@@ -17,15 +21,22 @@ class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: C
         fun bind(songs: StudyEntity) {
             binding.studyingItemSongIv.text = songs.title
             binding.studyingItemSingerIv.text = songs.artist
-            //binding.studyingItemAlbumIv.setImageResource(songs.coverImg)
+
+            val imageUrl = songs.album_art
+            Glide.with(context)
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_logo_splash)
+                .error(R.drawable.ic_logo_splash)
+                .fallback(R.drawable.ic_logo_splash)
+                .transform(CenterCrop(), RoundedCorners(10))
+                .into(binding.studyingItemAlbumIv)
             //binding.studyingItemLoaderIv.setImageResource(songs.progress)
         }
 
         fun setLyrics(songs: StudyEntity) {
             // 해당 Recyclerview의 데이터 넣어서 LyricsActivity 띄우기
             val intent = Intent(context, LyricsActivity::class.java)
-            intent.putExtra("title",songs.title)
-            intent.putExtra("singer",songs.artist)
+            intent.putExtra("studyId", songs.studyId)
             (context as Activity).startActivityForResult(intent,101)
         }
     }

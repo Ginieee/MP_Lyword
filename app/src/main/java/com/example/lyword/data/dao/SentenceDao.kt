@@ -13,7 +13,6 @@ interface SentenceDao {
 
     @Update
     fun updateSentence(sentence : SentenceEntity)
-
     @Insert
     fun insertSentenceList(list : List<SentenceEntity>) : List<Long>
 

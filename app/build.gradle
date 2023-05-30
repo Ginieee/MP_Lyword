@@ -82,7 +82,7 @@ dependencies {
     // 이미지 둥글~
     implementation 'de.hdodenhof:circleimageview:3.1.0'
 
-    // Dahyeon 브랜치의 룸디비 공부
+    // RoomDB
     implementation 'com.google.android.material:material:1.9.0'
     implementation "androidx.room:room-runtime:2.5.1"
     kapt "androidx.room:room-compiler:2.5.1"

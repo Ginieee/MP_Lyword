@@ -1,16 +1,21 @@
 package com.example.lyword.studying
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.lyword.data.LywordDatabase
+import com.example.lyword.data.entity.SentenceEntity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentStudyingBinding
+import kotlinx.coroutines.*
 
 class StudyingFragment : Fragment() {
     lateinit var binding : FragmentStudyingBinding
+    lateinit var db: LywordDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -18,18 +23,26 @@ class StudyingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentStudyingBinding.inflate(inflater, container, false)
+        db = LywordDatabase.getInstance(requireContext())
 
-        initRV()
+        GlobalScope.launch(Dispatchers.Main) {
+            initRV()
+        }
 
         return binding.root
     }
 
-    private fun initRV(){
-
-        val songs = ArrayList<StudyEntity>()
-        
-        val rvAdapter = StudyingSongRVAdapter(songs, requireContext())
-        binding.studyRecordRv.adapter = rvAdapter
-        binding.studyRecordRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+    @OptIn(DelicateCoroutinesApi::class)
+    private suspend fun initRV(){
+        withContext(Dispatchers.IO) {
+            Log.d("Studying", db.studyDao.getStudyList().toString())
+            val songs = db.studyDao.getStudyList() as ArrayList<StudyEntity>
+            withContext(Dispatchers.Main) {
+                val rvAdapter = StudyingSongRVAdapter(songs, requireContext())
+                binding.studyRecordRv.adapter = rvAdapter
+                binding.studyRecordRv.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            }
+        }
     }
 }
