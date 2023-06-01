@@ -3,6 +3,7 @@ package com.example.lyword.data.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.lyword.data.entity.SentenceEntity
 import com.example.lyword.data.entity.WordEntity
 
 @Dao
@@ -14,8 +15,14 @@ interface WordDao {
     fun getWordByLyricsId(lyricsId: Int): List<WordEntity>
 
     @Insert
-    fun insertWord(wordEntity: WordEntity)
+    fun insertWord(wordEntity: WordEntity): Long
+
+    @Insert
+    fun insertWordList(list : List<WordEntity>) : List<Long>
 
     @Insert
     fun insertWords(wordEntity: List<WordEntity>)
+
+    @Query("SELECT * FROM word_table WHERE wordId IN (:ids)")
+    fun getWordsById(ids : List<Long>) : List<WordEntity>
 }
