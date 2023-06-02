@@ -18,6 +18,12 @@ interface StudyDao {
     @Query("SELECT * FROM study_table")
     fun getStudyList() : List<StudyEntity>
 
+    @Query("SELECT * FROM study_table WHERE percentage_num = 100")
+    fun getCompletedStudies(): List<StudyEntity>
+
+    @Query("SELECT * FROM study_table WHERE percentage_num < 100")
+    fun getInProgressStudies(): List<StudyEntity>
+
     @Query("SELECT COUNT(*) FROM study_table WHERE studyId = :studyId")
     fun hasStudy(studyId: Long): Int
 

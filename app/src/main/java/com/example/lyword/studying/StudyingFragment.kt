@@ -35,8 +35,7 @@ class StudyingFragment : Fragment() {
     @OptIn(DelicateCoroutinesApi::class)
     private suspend fun initRV(){
         withContext(Dispatchers.IO) {
-            Log.d("Studying", db.studyDao.getStudyList().toString())
-            val songs = db.studyDao.getStudyList() as ArrayList<StudyEntity>
+            val songs = db.studyDao.getInProgressStudies() as ArrayList<StudyEntity>
             withContext(Dispatchers.Main) {
                 val rvAdapter = StudyingSongRVAdapter(songs, requireContext())
                 binding.studyRecordRv.adapter = rvAdapter
