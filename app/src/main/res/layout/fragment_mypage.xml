@@ -39,7 +39,7 @@
         app:layout_constraintTop_toTopOf="@id/mypage_logo"
         app:layout_constraintBottom_toBottomOf="@id/mypage_logo"
         android:src="@drawable/ic_mypage_setting"
-        android:background="@color/white"/>
+        android:background="#F9F9F9"/>
 
     <ImageButton
         android:id="@+id/mypage_edit_bt"
@@ -51,7 +51,8 @@
         app:layout_constraintBottom_toBottomOf="@id/mypage_logo"
         android:layout_marginRight="17dp"
         android:src="@drawable/ic_mypage_edit"
-        android:background="@color/white"/>
+        android:background="#F9F9F9"
+        />
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,14 +80,15 @@
             android:id="@+id/mypage_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mypage_nickname"
-            android:layout_marginEnd="50dp"
             android:layout_marginTop="28dp"
+            android:layout_marginEnd="50dp"
+            android:text="@string/mypage_nickname"
+            android:textColor="@color/black"
             android:textSize="23dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toEndOf="@+id/profile_img"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -108,6 +110,7 @@
             android:textColor="@color/black"
             android:text="@string/mypage_intro"
             android:layout_marginTop="12dp"
+            android:hint="자기 소개를 입력해주세요"
             app:layout_constraintStart_toStartOf="@id/mypage_level"
             app:layout_constraintTop_toBottomOf="@id/mypage_level"
             android:textSize="11dp"/>

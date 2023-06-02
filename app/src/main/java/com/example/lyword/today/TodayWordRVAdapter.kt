@@ -72,7 +72,8 @@ class TodayWordRVAdapter(private var todayWords: ArrayList<TodayWord>): Recycler
         tmp_lyrics=dialogView.findViewById<TextView>(R.id.dialog_pron_original)
 
         tmp_lyrics!!.text=holder.todayKoreanLyrics!!.text
-
+        
+        // 단어를 로마자 발음으로 전환 후 저장 
         dialog_pron_romaza!!.text =
             KoreanRomanizer.romanize(dialog_pron_original!!.text.toString(), KoreanCharacter.ConsonantAssimilation.Progressive)
 

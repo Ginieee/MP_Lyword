@@ -3,16 +3,18 @@ package com.example.lyword.data
 import android.content.Context
 import androidx.room.*
 import com.example.lyword.data.dao.MypageDao
+import com.example.lyword.data.dao.NotifyDao
 import com.example.lyword.data.dao.SentenceDao
 import com.example.lyword.data.dao.StudyDao
 import com.example.lyword.data.dao.WordDao
 import com.example.lyword.data.entity.MypageEntity
+import com.example.lyword.data.entity.NotifyEntity
 import com.example.lyword.data.entity.SentenceEntity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.data.entity.WordEntity
 
 @Database(
-    entities = [StudyEntity::class, SentenceEntity::class, WordEntity::class, MypageEntity::class],
+    entities = [StudyEntity::class, SentenceEntity::class, WordEntity::class, MypageEntity::class, NotifyEntity::class],
     version = 1,
     exportSchema = false
 )
@@ -27,6 +29,7 @@ abstract class LywordDatabase: RoomDatabase() {
     abstract val sentenceDao : SentenceDao
     abstract val wordDao: WordDao
     abstract val myPageDao : MypageDao
+    abstract val notifyDao : NotifyDao
 
     companion object{
         @Volatile
