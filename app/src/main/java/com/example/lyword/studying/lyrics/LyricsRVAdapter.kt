@@ -17,7 +17,6 @@ import com.example.lyword.databinding.ItemLyricsBinding
 
 class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Context): RecyclerView.Adapter<LyricsRVAdapter.ViewHolder>() {
 
-    val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private var selectedItem = 0
     private var lyricsId = 0L
     inner class ViewHolder(val binding: ItemLyricsBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -48,9 +47,9 @@ class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Co
             binding.itemLyricsStartIv.visibility = View.INVISIBLE
         }
 
-        fun startDialog() {
+        fun startDialog(lyrics: SentenceEntity) {
             val intent = Intent(context, LyricsWordDialog::class.java)
-            intent.putExtra("lyricsPosition", lyricsId)
+            intent.putExtra("lyricsPosition", lyrics.sentenceId)
             (context as Activity).startActivityForResult(intent,101)
         }
     }
@@ -71,7 +70,7 @@ class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Co
         }
 
         holder.binding.itemLyricsStartIv.setOnClickListener {
-            holder.startDialog()
+            holder.startDialog(lyricsList[position])
         }
     }
 
