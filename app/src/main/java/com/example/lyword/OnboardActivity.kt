@@ -43,7 +43,7 @@ class OnboardActivity : AppCompatActivity() {
         UserApiClient.instance.me { user, error ->
             val nickname = user?.kakaoAccount?.profile?.nickname
 
-            val mypage = MypageEntity(name = nickname ?: "", introduction = "자기 소개를 입력해주세요", profileImg = "https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg", level = 1, completion = 0, ongoing = 0)
+            val mypage = MypageEntity(name = nickname ?: "", introduction = "", profileImg = "https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg", level = 1, completion = 0, ongoing = 0)
 
             CoroutineScope(Dispatchers.IO).launch {
                 val mypageId = myPageDao.insertMypage(mypage)
