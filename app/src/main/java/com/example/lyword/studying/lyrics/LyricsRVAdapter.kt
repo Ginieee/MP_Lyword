@@ -19,11 +19,13 @@ class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Co
 
     val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
     private var selectedItem = 0
+    private var lyricsId = 0L
     inner class ViewHolder(val binding: ItemLyricsBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(lyrics: SentenceEntity) {
             binding.itemLyricsLyTv.text = lyrics.sentenceOrigin
             binding.itemLyricsPronTv.text = lyrics.sentencePronunciation
             binding.itemLyricsTransTv.text = lyrics.sentenceEnglish
+            lyricsId = lyrics.sentenceId
 
             if (adapterPosition == selectedItem) {
                 setTextColorSelected()
@@ -48,7 +50,7 @@ class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Co
 
         fun startDialog() {
             val intent = Intent(context, LyricsWordDialog::class.java)
-            intent.putExtra("lyricsPosition", selectedItem)
+            intent.putExtra("lyricsPosition", lyricsId)
             (context as Activity).startActivityForResult(intent,101)
         }
     }

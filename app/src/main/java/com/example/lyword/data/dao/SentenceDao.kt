@@ -18,4 +18,7 @@ interface SentenceDao {
 
     @Query("SELECT * FROM sentence_table WHERE sentenceId IN (:ids)")
     fun getSentencesById(ids : List<Long>) : List<SentenceEntity>
+
+    @Query("SELECT * FROM sentence_table WHERE sentenceId = :id")
+    fun getSentenceById(id : Long) : SentenceEntity
 }
