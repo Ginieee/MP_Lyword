@@ -377,16 +377,19 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             val pron = KoreanRomanizer.romanize(word, KoreanCharacter.ConsonantAssimilation.Progressive)
             val translate2 = TranslateWord(word)
             val meaningList = translate2.execute().get()
-            while (meaningList.isEmpty()) {
-                Log.d("UPDATE_SEPARATE", "waiting while")
-            }
-
+            Log.d("UPDATE_SEPARATE", "waiting while")
+            while (meaningList.isEmpty()) { }
+            Log.d("UPDATE_SEPARATE", "FINISH while")
             var meaning = ""
-            for (m in meaningList) {
-                if (meaning != "") {
-                    meaning += ", "
+            if (meaningList[0] == "0") {
+                meaning = "Fail to load"
+            } else {
+                for (m in meaningList) {
+                    if (meaning != "") {
+                        meaning += ", "
+                    }
+                    meaning += m.replace(";", "")
                 }
-                meaning += m.replace(";", "")
             }
             val wordEntity = WordEntity()
             wordEntity.wordSentenceIdx = linenum
@@ -401,10 +404,10 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
         }
         Log.d("UPDATE_WORD_FINAL", updateWord.toString())
         addWordInDao()
-//        Log.d("ADD_STUDY", isFinished.toString() + nowSentence.toString())
-//        if (isFinished == nowSentence) {
-//            addWordInStudy()
-//        }
+        Log.d("ADD_STUDY", isFinished.toString() + nowSentence.toString())
+        if (isFinished == nowSentence) {
+            addWordInStudy()
+        }
     }
     // 단어 번역
     class TranslateWord(private val str: String) : AsyncTask<String, Void, ArrayList<String>>() {
@@ -431,12 +434,16 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                 while(br.readLine().also { line = it } != null){
                     if(line.contains("<trans_word>") && i<2){
                         val temp = line.split("\\[".toRegex()).toTypedArray()
+                        Log.d("TRANS_LINE", line.toString())
                         val temp2 = temp[2].split("]".toRegex()).toTypedArray()
                         if (line.contains("<trans_word>")) {
                             dict = temp2[0]
                             list.add("$dict")
                             i++
                         }
+                    } else {
+                        list.add("0")
+                        return list
                     }
                 }
             } catch (e: Exception){
