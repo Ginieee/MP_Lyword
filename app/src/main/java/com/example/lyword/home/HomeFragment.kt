@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.lyword.MainActivity
@@ -16,10 +15,9 @@ import com.example.lyword.data.LywordDatabase
 import com.example.lyword.home.search.SearchActivity
 import com.example.lyword.data.entity.StudyEntity
 import com.example.lyword.databinding.FragmentHomeBinding
-import com.example.lyword.home.search.ITunesResult
-import com.example.lyword.home.search.ITunesService
-import com.example.lyword.home.search.ITunesView
+import com.example.lyword.home.notify.NoticeActivity
 import com.example.lyword.studying.lyrics.LyricsActivity
+import okhttp3.internal.notify
 import org.jsoup.Jsoup
 import java.io.IOException
 
@@ -48,6 +46,7 @@ class HomeFragment : Fragment() {
         db = LywordDatabase.getInstance(requireContext())
 
         clickListener()
+        Log.d("HOME_FRAG", "OnCreate")
 
         return binding.root
     }
@@ -56,6 +55,8 @@ class HomeFragment : Fragment() {
         super.onResume()
         getList()
         setAdapter()
+        setNotice()
+        Log.d("HOME_FRAG", "OnResume")
     }
 
     private fun setAdapter() {
@@ -69,6 +70,11 @@ class HomeFragment : Fragment() {
     }
 
     private fun clickListener() {
+        binding.homeHeaderNoticeBellIv.setOnClickListener {
+            val intent = Intent(context, NoticeActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.homeHeaderSearchTv.setOnClickListener {
             Log.d("HOME_FRG","검색창 클릭")
             val intent = Intent( context, SearchActivity::class.java)
@@ -116,6 +122,29 @@ class HomeFragment : Fragment() {
             }
 
         })
+    }
+
+    private fun setNotice() {
+        val thread = Thread {
+            val notices = db.notifyDao.getUnreadNotice()
+            Log.d("NOTICE_READ", notices.toString())
+
+            if (notices.isEmpty()) {
+                requireActivity().runOnUiThread {
+                    binding.homeHeaderNoticeEclipseIv.visibility = View.GONE
+                }
+            } else {
+                requireActivity().runOnUiThread {
+                    binding.homeHeaderNoticeEclipseIv.visibility = View.VISIBLE
+                }
+            }
+        }
+        thread.start()
+        try {
+            thread.join()
+        } catch (e : InterruptedException) {
+            e.printStackTrace()
+        }
     }
 
     private fun getList() {
