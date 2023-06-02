@@ -167,10 +167,10 @@ class LyricsStudyFragment  : Fragment(), SeparateView {
                 text
             )
         )
-        separateService.getSeparateLyrics(request, index)
+        separateService.getSeparateLyrics(request, index, false)
     }
     // 형태소 분석 결과 받아오는 인터페이스 내 함수
-    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int) {
+    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int, isFinished: Boolean) {
         var separateWord = ArrayList<String>()
         for (i in result){
             if(i.type.slice(IntRange(0,0)) == "N"){

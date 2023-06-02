@@ -131,6 +131,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
         Log.d("MEDIA_PLAYER", "url : $previewUrl")
     }
 
+    var studying = StudyEntity()
     private fun clickListener(){
         binding.popularContentCloseBtn.setOnClickListener {
             val resultIntent = Intent()
@@ -142,7 +143,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             binding.popularStartBtn.text = ""
             binding.popularLoadingLv.visibility = View.VISIBLE
 
-            var studying = StudyEntity()
+            //var studying = StudyEntity()
             studying.title = title
             studying.artist = artist
             studying.album_art = albumCover
@@ -177,7 +178,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                                 sentenceList.add(input)
                                 count++
                                 if (count == getSentence.size) {
-                                    addStudyInDao(studying, sentenceList, getSentence)
+                                    addStudyInDao(sentenceList, getSentence)
                                 }
                             }
                         }
@@ -188,13 +189,15 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
         }
     }
 
-    private fun addStudyInDao(studying: StudyEntity, sentenceList: ArrayList<SentenceEntity>, getSentence: List<String>){
+    private fun addStudyInDao(sentenceList: ArrayList<SentenceEntity>, getSentence: List<String>){
         val thread = Thread {
             val sentenceIds = db.sentenceDao.insertSentenceList(sentenceList)
             studying.sentenceList = db.sentenceDao.getSentencesById(sentenceIds)
             var count = 0
+            Log.d("ADD_SID", sentenceIds.toString())
             for (sentenceId in sentenceIds){
-                getSeparateLyrics(getSentence[count], sentenceId.toInt())
+                Log.d("ADD_SID_IC", sentenceId.toString()+ (sentenceIds.size-1 == count) +getSentence[count])
+                getSeparateLyrics(getSentence[count], sentenceId.toInt(), sentenceIds.size-1 == count)
                 count++
             }
             val wordIds = db.wordDao.insertWordList(updateWord)
@@ -202,6 +205,16 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
 
             Log.d("SENTENCE_ADD", sentenceIds.toString())
             Log.d("SENTENCE_ADD", studying.sentenceList.toString())
+        }
+        thread.start()
+        thread.join()
+    }
+
+    private fun addWordInDao(){
+        val thread = Thread {
+            val wordIds = db.wordDao.insertWordList(updateWord)
+            studying.wordList = db.wordDao.getWordsById(wordIds)
+
             Log.d("WORD_ADD", wordIds.toString())
             Log.d("WORD_ADD", studying.wordList.toString())
         }
@@ -317,7 +330,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
         }
     }
     // 형태소 분석
-    private fun getSeparateLyrics(text : String, index: Int){
+    private fun getSeparateLyrics(text : String, index: Int, isFinished: Boolean){
         val separateService = SeparateService()
         separateService.setSeparateView(this)
 
@@ -328,10 +341,10 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                 text
             )
         )
-        separateService.getSeparateLyrics(request, index)
+        separateService.getSeparateLyrics(request, index, isFinished)
     }
     // 형태소 분석 결과 받아오는 인터페이스 내 함수
-    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int) {
+    override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int, isFinished: Boolean) {
         var separateWord = ArrayList<String>()
         for (i in result){
             if(i.type.slice(IntRange(0,0)) == "N"){
@@ -341,12 +354,11 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                 separateWord.add(i.text+"다")
             }
         }
-        Log.d("ADD_GET_WORDS", separateWord.toString())
         // API 호출이 완료되었을 때, 단어를 하나씩 저장한다
-        initWords(separateWord, index)
+        initWords(separateWord, index, isFinished)
     }
     // 각 단어들의 뜻과 발음 불러와서 객체에 저장
-    private fun initWords(separateWord: ArrayList<String>, linenum: Int){
+    private fun initWords(separateWord: ArrayList<String>, linenum: Int, isFinished: Boolean){
         var wordIndex = 0
         var wordEntities = ArrayList<WordEntity>()
 
@@ -369,6 +381,10 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             wordIndex += 1
             updateWord.add(wordEntity)
             Log.d("ADD_WORD_FIN", updateWord.toString())
+        }
+        if (isFinished) {
+            Log.d("ADD_WORD_CALL+LASTDAO", "hi")
+            addWordInDao()
         }
     }
     // 단어 번역

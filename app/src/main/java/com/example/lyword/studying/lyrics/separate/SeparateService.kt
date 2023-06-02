@@ -13,7 +13,7 @@ class SeparateService {
         this.separateView = separateView
     }
 
-    fun getSeparateLyrics(separateRequest: SeparateRequest, index: Int) {
+    fun getSeparateLyrics(separateRequest: SeparateRequest, index: Int, isFinished: Boolean) {
         val separateService = getSeparateRetrofit().create(SeparateRetroInterface::class.java)
         Log.d("hi", separateRequest.toString())
         var resMorp = ArrayList<MorpResult>()
@@ -31,25 +31,12 @@ class SeparateService {
                     for (sentence in respToSentence){
                         resMorp.addAll(sentence.morpList)
                     }
-                    separateView.onGetLyricsSuccess(resMorp, index)
+                    separateView.onGetLyricsSuccess(resMorp, index, isFinished)
                 }
             }
             override fun onFailure(call: Call<SeparateResponse>, t: Throwable) {
                 Log.d("separate/failure", t.message.toString())
             }
-
         })
-        Log.d("separate", "Separate Finish")
-        var separateWord = ArrayList<String>()
-        for (i in resMorp){
-            if(i.type.slice(IntRange(0,0)) == "N"){
-                separateWord.add(i.text)
-            }
-            else if(i.type.slice(IntRange(0,0)) == "V"){
-                separateWord.add(i.text+"다")
-            }
-        }
-        Log.d("ADD_GET_WORDS", separateWord.toString())
-        //return separateWord
     }
 }
