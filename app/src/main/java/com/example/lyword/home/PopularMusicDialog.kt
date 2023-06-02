@@ -441,15 +441,16 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                             list.add("$dict")
                             i++
                         }
-                    } else {
-                        list.add("0")
-                        return list
                     }
+                    Log.d("ADD_HEY", list.toString())
                 }
             } catch (e: Exception){
                 Log.e("exceptionError", e.toString())
             }
             Log.d("WORD_TRANS", list.toString())
+            if (list.size == 0){
+                list.add("0")
+            }
 
             return list
         }
