@@ -27,7 +27,7 @@ class LyricsWordDialog : AppCompatActivity() {
         binding = DialogLyricsWordBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var lyricsPosition = intent.getIntExtra("lyricsPosition", -1)
+        var lyricsPosition = intent.getLongExtra("lyricsPosition", -1)
         Log.d("lyricsWordDialog", lyricsPosition.toString())
 
         // 액티비티 크기 세팅하기
@@ -47,13 +47,11 @@ class LyricsWordDialog : AppCompatActivity() {
     }
 
     @OptIn(DelicateCoroutinesApi::class)
-    private fun initVP(lyricsPosition: Int){
+    private fun initVP(lyricsPosition: Long){
         db = LywordDatabase.getInstance(this)
 
         GlobalScope.launch {
             val wordList = db.wordDao.getWordByLyricsId(lyricsPosition)
-            val allWord = db.wordDao.getWord()
-            val songList = db.studyDao.getStudyList()
 
             Log.d("lyricsWordDialog - Idx", wordList.toString())
             GlobalScope.launch(Dispatchers.Main) {
@@ -61,9 +59,7 @@ class LyricsWordDialog : AppCompatActivity() {
                 binding.dialogLyricsVp.adapter = wordAdapter
                 binding.dialogLyricsVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             }
-
         }
-
     }
 
     private suspend fun getWordListFromDatabase(): List<WordEntity> = withContext(Dispatchers.IO) {

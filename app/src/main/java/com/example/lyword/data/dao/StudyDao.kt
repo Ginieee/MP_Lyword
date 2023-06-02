@@ -18,11 +18,11 @@ interface StudyDao {
     @Query("SELECT * FROM study_table")
     fun getStudyList() : List<StudyEntity>
 
-    @Query("SELECT COUNT(*) FROM study_table WHERE studyId = :studyId")
-    fun hasStudy(studyId: Long): Int
-
-    @Update
-    suspend fun updateSentenceList(sentenceList: List<SentenceEntity>)
+//    @Query("SELECT COUNT(*) FROM study_table WHERE studyId = :studyId")
+//    fun hasStudy(studyId: Long): Int
+//
+//    @Update
+//    suspend fun updateSentenceList(sentenceList: List<SentenceEntity>)
 
     @Query("SELECT * FROM study_table WHERE studyId = :studyId")
     fun getStudyById(studyId : Long) : StudyEntity

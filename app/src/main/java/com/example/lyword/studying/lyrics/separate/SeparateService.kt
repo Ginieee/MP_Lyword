@@ -13,7 +13,7 @@ class SeparateService {
         this.separateView = separateView
     }
 
-    fun getSeparateLyrics(separateRequest: SeparateRequest, index: Int, isFinished: Boolean) {
+    fun getSeparateLyrics(separateRequest: SeparateRequest, index: Int, isFinished: Int) {
         val separateService = getSeparateRetrofit().create(SeparateRetroInterface::class.java)
         Log.d("hi", separateRequest.toString())
         var resMorp = ArrayList<MorpResult>()
