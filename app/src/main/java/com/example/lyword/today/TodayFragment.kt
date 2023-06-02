@@ -29,11 +29,10 @@ class TodayFragment : Fragment() {
 
         binding.startToLearn.setOnClickListener {
             val studyingFragment = StudyingFragment()
-            val fragmentTransaction = childFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.today_frm, studyingFragment)
-            fragmentTransaction.addToBackStack(null)
-            fragmentTransaction.commit()
-
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.today_frm, studyingFragment)
+                .addToBackStack(null)
+                .commit()
             (requireActivity() as MainActivity).binding.mainBottomNavi.selectedItemId = R.id.studyingFragment
         }
 
