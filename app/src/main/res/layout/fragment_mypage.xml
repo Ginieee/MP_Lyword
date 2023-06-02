@@ -79,14 +79,15 @@
             android:id="@+id/mypage_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/mypage_nickname"
-            android:layout_marginEnd="50dp"
             android:layout_marginTop="28dp"
+            android:layout_marginEnd="50dp"
+            android:text="@string/mypage_nickname"
+            android:textColor="@color/black"
             android:textSize="23dp"
             android:textStyle="bold"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toEndOf="@+id/profile_img"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView

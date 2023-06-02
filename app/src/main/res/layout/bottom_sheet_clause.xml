@@ -133,6 +133,7 @@
             android:layout_marginBottom="70dp"
             android:layout_marginHorizontal="32dp"
             android:textColor="#6E6D73"
+            android:backgroundTint="@color/subPink"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_rectangle_10dp"
             android:text="@string/signup_next"
