@@ -31,6 +31,7 @@ class NotifyRVAdapter : RecyclerView.Adapter<NotifyRVAdapter.ViewHolder>() {
         fun bind (notify : NotifyEntity, position : Int) {
             binding.noticeTitleTv.text = notify.title
             binding.noticeContentTv.text = notify.content
+            binding.noticeTimeTv.text = notify.time
             if (notify.img.isNullOrBlank()) {
                 binding.noticeIv.setImageResource(R.drawable.ic_notice_bell)
             } else {
