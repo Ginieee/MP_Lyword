@@ -20,6 +20,7 @@ import com.example.lyword.MainActivity
 import com.example.lyword.R
 import com.example.lyword.data.LywordDatabase
 import com.example.lyword.data.entity.NotifyEntity
+import com.example.lyword.setAlarm
 import com.google.api.client.util.DateTime
 import okhttp3.internal.notify
 import java.text.SimpleDateFormat
@@ -63,6 +64,7 @@ class PushNotificationReceiver : BroadcastReceiver() {
             return
         }
         notificationManager.notify(notificationId, builder.build())
+        setAlarm(context)
 
         val thread = Thread {
             val id = db.notifyDao.insertNotify(
