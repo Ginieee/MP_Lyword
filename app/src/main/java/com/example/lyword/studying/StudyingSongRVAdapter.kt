@@ -21,6 +21,7 @@ class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: C
         fun bind(songs: StudyEntity) {
             binding.studyingItemSongIv.text = songs.title
             binding.studyingItemSingerIv.text = songs.artist
+            binding.studyingItemLoaderIv.setImageResource(matchPercent(songs.percent))
 
             val imageUrl = songs.album_art
             Glide.with(context)
@@ -59,5 +60,33 @@ class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: C
 
     override fun getItemCount(): Int {
         return songList.size
+    }
+
+    fun matchPercent(percent : Int) : Int {
+        return when (percent) {
+            0 -> R.drawable.loader_0
+            5 -> R.drawable.loader_5
+            10 -> R.drawable.loader_10
+            15 -> R.drawable.loader_15
+            20 -> R.drawable.loader_20
+            25 -> R.drawable.loader_25
+            30 -> R.drawable.loader_30
+            35 -> R.drawable.loader_35
+            40 -> R.drawable.loader_40
+            45 -> R.drawable.loader_45
+            50 -> R.drawable.loader_50
+            55 -> R.drawable.loader_55
+            60 -> R.drawable.loader_60
+            65 -> R.drawable.loader_65
+            70 -> R.drawable.loader_70
+            75 -> R.drawable.loader_75
+            80 -> R.drawable.loader_80
+            85 -> R.drawable.loader_85
+            90 -> R.drawable.loader_90
+            95 -> R.drawable.loader_95
+            100 -> R.drawable.loader_100
+
+            else -> R.drawable.loader_0
+        }
     }
 }

@@ -4,38 +4,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_lyrics_ll"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp">
 
     <TextView
         android:id="@+id/item_lyrics_ly_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Lyrics"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/item_lyrics_pron_tv"
+        app:layout_constraintEnd_toStartOf="@id/item_lyrics_start_iv"
+        app:layout_constraintHorizontal_bias="0"
         />
     <TextView
         android:id="@+id/item_lyrics_pron_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Pronun"
+        android:text="Pronun몇번의몇번의몇번의몇번의몇번의몇번의몇번의몇번의"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_lyrics_ly_tv"
         app:layout_constraintBottom_toTopOf="@id/item_lyrics_trans_tv"
+        app:layout_constraintEnd_toStartOf="@id/item_lyrics_start_iv"
+        app:layout_constraintHorizontal_bias="0"
         />
     <TextView
         android:id="@+id/item_lyrics_trans_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Trans"
         android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/item_lyrics_pron_tv"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/item_lyrics_start_iv"
+        app:layout_constraintHorizontal_bias="0"
         />
 
     <ImageView
