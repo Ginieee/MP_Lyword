@@ -2,6 +2,7 @@ package com.example.lyword.studying.lyrics
 
 import android.app.Activity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lyword.databinding.ItemLyricsWordBinding
@@ -14,6 +15,11 @@ class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : Recyc
             binding.dialogVocTv.text = word.wordOrigin
             binding.dialogPronTv.text = word.wordPronunciation
             binding.dialogMeanTv.text = word.wordEnglish
+        }
+
+        fun emptyInit() {
+            binding.dialogLyricsCl.visibility = View.INVISIBLE
+            binding.dialogLyricsDefaultIv.visibility = View.VISIBLE
         }
     }
 
@@ -29,7 +35,11 @@ class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : Recyc
         holder: ViewHolder,
         position: Int
     ) {
-        holder.bind(wordList[position])
+        if(wordList[0].wordOrigin == "0"){
+            holder.emptyInit()
+        } else {
+            holder.bind(wordList[position])
+        }
 
         // 종료 버튼
         holder.binding.dialogLyricsCloseIv.setOnClickListener {

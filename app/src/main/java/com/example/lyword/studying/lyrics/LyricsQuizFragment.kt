@@ -26,8 +26,8 @@ LyricsQuizFragment  : Fragment() {
 
     // 생성자를 통해 studyId를 전달받음
     companion object {
-        fun newInstance(studyId: Long): LyricsStudyFragment {
-            val fragment = LyricsStudyFragment()
+        fun newInstance(studyId: Long): LyricsQuizFragment {
+            val fragment = LyricsQuizFragment()
             val args = Bundle()
             args.putLong("studyId", studyId)
             fragment.arguments = args
