@@ -385,6 +385,7 @@ class SolvingQuizActivity : AppCompatActivity() {
             }
         }
 
+
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
 
