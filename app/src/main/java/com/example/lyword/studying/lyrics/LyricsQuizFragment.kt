@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -204,10 +205,20 @@ class SolvingQuizActivity : AppCompatActivity() {
     var quizIndex: Int = 0
     var choice: CharSequence = ""
     var resultCheck: Int = 0
+
+    private var closeButtonClickedCount: Int = 0
+
+    companion object {
+        private const val KEY_CLOSE_BUTTON_CLICKED_COUNT = "closeButtonClickedCount"
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySolveQuizBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        closeButtonClickedCount = savedInstanceState?.getInt(KEY_CLOSE_BUTTON_CLICKED_COUNT, 0) ?: 0
 
      //DB에 접근해서 퀴즈 데이터 불러 오는 부분
      db = LywordDatabase.getInstance(this)
@@ -224,8 +235,11 @@ class SolvingQuizActivity : AppCompatActivity() {
         while (randomIndices.size < count) {
             val randomIndex = (0 until totalCount).random()
             if (!randomIndices.contains(randomIndex)) {
-                randomIndices.add(randomIndex)
-                randomValues.add(solveQuiz[randomIndex])
+                if(solveQuiz[randomIndex].wordEnglish!="Fail to load" && solveQuiz[randomIndex].wordEnglish!=""){
+                    randomIndices.add(randomIndex)
+                    randomValues.add(solveQuiz[randomIndex])
+                }
+
             }
         }
 
@@ -234,12 +248,45 @@ class SolvingQuizActivity : AppCompatActivity() {
 
         binding.lyricsQuiz.text= quizContents[quizIndex].wordOrigin
         binding.romazaQuiz.text= quizContents[quizIndex].wordPronunciation
-        binding.quizCheck.text= quizContents[quizIndex].wordEnglish // 정답 확인용
+        /*binding.quizCheck.text= quizContents[quizIndex].wordEnglish // 정답 확인용*/
 
-        binding.quizSelect1.text=quizContents[0].wordEnglish
+        var quizSelectEnglish: CharSequence = ""
+        val tmpString: MutableList<CharSequence> = mutableListOf()
+
+
+        for (i in 0..3) {
+            quizSelectEnglish = quizContents[i].wordEnglish
+
+            if ("," in quizSelectEnglish) {
+                quizSelectEnglish=quizSelectEnglish.split(",")[0]
+                tmpString.add(quizSelectEnglish.split(" ")[0])
+            } else {
+                tmpString.add(quizSelectEnglish)
+            }
+
+        }
+
+        quizSelectEnglish = quizContents[quizIndex].wordEnglish
+
+        if ("," in quizSelectEnglish) {
+            quizSelectEnglish=quizSelectEnglish.split(",")[0]
+            binding.quizCheck.text=quizSelectEnglish.split(" ")[0]
+        } else {
+            binding.quizCheck.text=quizSelectEnglish
+        }
+
+
+
+      /*  binding.quizSelect1.text=quizContents[0].wordEnglish
         binding.quizSelect2.text=quizContents[1].wordEnglish
         binding.quizSelect3.text=quizContents[2].wordEnglish
-        binding.quizSelect4.text=quizContents[3].wordEnglish
+        binding.quizSelect4.text=quizContents[3].wordEnglish*/
+
+        binding.quizSelect1.text=tmpString[0]
+        binding.quizSelect2.text=tmpString[1]
+        binding.quizSelect3.text=tmpString[2]
+        binding.quizSelect4.text=tmpString[3]
+
 
         binding.quizSelect1.setOnClickListener{
             choice=binding.quizSelect1.text
@@ -293,6 +340,11 @@ class SolvingQuizActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_CLOSE_BUTTON_CLICKED_COUNT, closeButtonClickedCount)
+    }
+
     private fun showCustomDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_quiz_answer, null)
 
@@ -323,8 +375,15 @@ class SolvingQuizActivity : AppCompatActivity() {
             closeButton.text="Next"
 
             closeButton.setOnClickListener {
-                dialog.dismiss()
-                finish()
+                closeButtonClickedCount++
+                if (closeButtonClickedCount >= 3) {
+                    dialog.dismiss()
+                    finish()
+                } else {
+                    Log.e(closeButtonClickedCount.toString(),"testsetstestsetsetstsetste"+closeButtonClickedCount.toString())
+                    dialog.dismiss()
+                    recreate()
+                }
             }
         }
 
