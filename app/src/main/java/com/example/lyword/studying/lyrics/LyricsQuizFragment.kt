@@ -408,6 +408,7 @@ class SolvingQuizActivity : AppCompatActivity() {
         }
     }
 
+
     // 퀴즈에서 정답시에 studyId를 사용해서 해당 StudyEntity의 퍼센트를 올리는 부분
     private fun upgradePercentFromDB(tmpStudyId: Long) {
         val thread : Thread = Thread {
