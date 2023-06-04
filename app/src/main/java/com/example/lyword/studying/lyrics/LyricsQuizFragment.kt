@@ -248,7 +248,7 @@ class SolvingQuizActivity : AppCompatActivity() {
 
         binding.lyricsQuiz.text= quizContents[quizIndex].wordOrigin
         binding.romazaQuiz.text= quizContents[quizIndex].wordPronunciation
-        /*binding.quizCheck.text= quizContents[quizIndex].wordEnglish // 정답 확인용*/
+
 
         var quizSelectEnglish: CharSequence = ""
         val tmpString: MutableList<CharSequence> = mutableListOf()
@@ -276,11 +276,6 @@ class SolvingQuizActivity : AppCompatActivity() {
         }
 
 
-
-      /*  binding.quizSelect1.text=quizContents[0].wordEnglish
-        binding.quizSelect2.text=quizContents[1].wordEnglish
-        binding.quizSelect3.text=quizContents[2].wordEnglish
-        binding.quizSelect4.text=quizContents[3].wordEnglish*/
 
         binding.quizSelect1.text=tmpString[0]
         binding.quizSelect2.text=tmpString[1]
@@ -325,8 +320,7 @@ class SolvingQuizActivity : AppCompatActivity() {
                     resultCheck=1
                     showCustomDialog()
 
-                    // 정답시 퍼센트를 올리는 부분
-                    upgradePercentFromDB(tmpStudyId)
+
 
                 }else{ // 오답
                     resultCheck=0
@@ -359,7 +353,7 @@ class SolvingQuizActivity : AppCompatActivity() {
 
         val dialog = dialogBuilder.create()
 
-
+        tmpStudyId = intent.getLongExtra("tmpStudyId", 0)
 
         if(resultCheck==0){
 
@@ -377,15 +371,20 @@ class SolvingQuizActivity : AppCompatActivity() {
             closeButton.setOnClickListener {
                 closeButtonClickedCount++
                 if (closeButtonClickedCount >= 3) {
+
+                    // 정답시 퍼센트를 올리는 부분
+                    upgradePercentFromDB(tmpStudyId)
+
                     dialog.dismiss()
                     finish()
                 } else {
-                    Log.e(closeButtonClickedCount.toString(),"testsetstestsetsetstsetste"+closeButtonClickedCount.toString())
+
                     dialog.dismiss()
                     recreate()
                 }
             }
         }
+
 
         dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -409,6 +408,7 @@ class SolvingQuizActivity : AppCompatActivity() {
             e.printStackTrace()
         }
     }
+
 
     // 퀴즈에서 정답시에 studyId를 사용해서 해당 StudyEntity의 퍼센트를 올리는 부분
     private fun upgradePercentFromDB(tmpStudyId: Long) {
