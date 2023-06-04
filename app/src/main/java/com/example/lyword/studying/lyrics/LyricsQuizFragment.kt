@@ -20,14 +20,13 @@ import com.example.lyword.data.entity.WordEntity
 import com.example.lyword.databinding.ActivitySolveQuizBinding
 import com.example.lyword.databinding.FragmentStudyQuizBinding
 
-class
-LyricsQuizFragment  : Fragment() {
+class LyricsQuizFragment  : Fragment() {
     lateinit var binding: FragmentStudyQuizBinding
 
     // 생성자를 통해 studyId를 전달받음
     companion object {
-        fun newInstance(studyId: Long): LyricsStudyFragment {
-            val fragment = LyricsStudyFragment()
+        fun newInstance(studyId: Long): LyricsQuizFragment {
+            val fragment = LyricsQuizFragment()
             val args = Bundle()
             args.putLong("studyId", studyId)
             fragment.arguments = args
