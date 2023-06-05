@@ -132,7 +132,7 @@ fun setAlarm(context: Context) {
     val calendar : Calendar = Calendar.getInstance().apply {
         timeInMillis = System.currentTimeMillis()
         set(Calendar.HOUR_OF_DAY, 1)
-        set(Calendar.MINUTE, 35)
+        set(Calendar.MINUTE, 50)
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
     }
