@@ -54,10 +54,7 @@
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -67,6 +64,11 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false">
+
         </activity>
         <activity
             android:name=".studying.lyrics.LyricsActivity"
