@@ -64,9 +64,6 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
 
     private var mediaPlayer : MediaPlayer? = null
 
-    private lateinit var translate2 : TranslateWord
-    private lateinit var meaningList: ArrayList<String>
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -149,32 +146,36 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             binding.popularStartBtn.text = ""
             binding.popularLoadingLv.visibility = View.VISIBLE
 
-            //var studying = StudyEntity()
+            // Set study's basic information
             studying.title = title
             studying.artist = artist
             studying.album_art = albumCover
 
             wordList.clear()
             CoroutineScope(Dispatchers.Main).launch {
-                // StudyEntity에 넣을 SentenceEntity 객체
+                // SentenceEntity object to put in StudyEntity
                 val sentenceList = ArrayList<SentenceEntity>()
-                // 문장 불러오기 - by 어진
+                // Get the Lyrics - call getLyrics function
                 val getSentence = withContext(Dispatchers.IO) {
                     getLyrics(title, artist)
                 }
-
+                // Search the Song's video - call searchVideos function
                 studying.videoId = withContext(Dispatchers.IO) {
                     searchVideos("$title $artist Official")
                 }
-
-                // 문장 발음과 해석 불러오기
+                // Get the Lyrics' Pronunciation and Translate(Korean->English) sentence by sentence
                 var count = 0
                 for(line in getSentence){
+                    // Get pronunciation
                     val pron = KoreanRomanizer.romanize(line, KoreanCharacter.ConsonantAssimilation.Progressive)
+                    // Call the Translate thread
                     val translate = TranslateSentence(line, object : TranslateSentence.TranslateSentenceCallback {
+                        // When the thread finished
                         override fun onTranslateSentenceResult(result: String) {
                             CoroutineScope(Dispatchers.Main).launch {
+                                // Make new SentenceEntity object
                                 val input = SentenceEntity()
+                                // Store the results in the object
                                 input.sentenceOrigin = line
                                 input.sentencePronunciation = pron
                                 input.sentenceEnglish = result
@@ -192,7 +193,8 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             }
         }
     }
-
+    // Function to store the SentenceEntity into Dao
+    // Input: SentenceEntityList to store
     private fun addStudyInDao(sentenceList: ArrayList<SentenceEntity>){
         nowSentence = 0
         val thread = Thread {
@@ -211,7 +213,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
         thread.start()
         thread.join()
     }
-
+    // Function to store the WordEntity into Dao
     private fun addWordInDao(){
         val thread = Thread {
             val wordIds = db.wordDao.insertWordList(updateWord)
@@ -227,7 +229,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             e.printStackTrace()
         }
     }
-
+    // Function to store the WordList in the StudyEntity
     private fun addWordInStudy(){
         val addStudyThread = Thread {
             studying.wordList = wordList
@@ -245,7 +247,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
         addStudyThread.start()
     }
 
-    // 원래 가사를 받기
+    // Get the Lyrics
     private suspend fun getLyrics(title: String, artist: String): List<String> = withContext(Dispatchers.IO) {
         val input = URLEncoder.encode(artist, "UTF-8") + "+" + URLEncoder.encode(title, "UTF-8")
         Log.d("SEARCH_ACT_GET_LYRICS", input)
@@ -282,15 +284,16 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
 
         sentenceList
     }
-    // 문장 번역
+    // Translate the sentences of the lyrics - Papago API
     class TranslateSentence(private val str: String, private val callback: TranslateSentenceCallback) : AsyncTask<String, Void, String>() {
         var result = ""
+        // Interface to get the result when the thread is finished (API result)
         interface TranslateSentenceCallback {
             fun onTranslateSentenceResult(result: String)
         }
 
         override fun doInBackground(vararg strings: String): String? {
-            //네이버 API
+            // Naver API
             val clientId = "HryFaoEG1FrRw23gbvNK"
             val clientSecret = "TNJrxS8SKg"
 
@@ -302,7 +305,7 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                 con.requestMethod = "POST"
                 con.setRequestProperty("X-Naver-Client-Id", clientId)
                 con.setRequestProperty("X-Naver-Client-Secret", clientSecret)
-                // post request
+                // Post request
                 val postParams = "source=ko&target=en&text=$text"
                 con.doOutput = true
                 val wr = DataOutputStream(con.outputStream)
@@ -310,18 +313,20 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                 wr.flush()
                 wr.close()
                 val responseCode = con.responseCode
-                val br: BufferedReader = if (responseCode == 200) { // 정상 호출
+                // API call ok
+                val br: BufferedReader = if (responseCode == 200) {
                     BufferedReader(InputStreamReader(con.inputStream))
-                } else {  // 에러 발생
+                } else { // API call error
                     BufferedReader(InputStreamReader(con.errorStream))
                 }
                 var inputLine: String?
                 val response = StringBuffer()
+                // Get the result
                 while (br.readLine().also { inputLine = it } != null) {
                     response.append(inputLine)
                 }
                 br.close()
-
+                // Convert the result (JSON -> String)
                 val element = response.toString()
                 val jsonObject = JSONObject(element).getJSONObject("message")
                     .getJSONObject("result")
@@ -332,17 +337,17 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
             }
             return result
         }
-
+        // Send the result
         override fun onPostExecute(result: String) {
             super.onPostExecute(result)
             callback.onTranslateSentenceResult(result)
         }
     }
-    // 형태소 분석
+    // Morpheme separate in Lyrics sentences - Call API
     private fun getSeparateLyrics(text : String, index: Int, isFinished: Int){
         val separateService = SeparateService()
         separateService.setSeparateView(this)
-
+        // Set the request object
         val request = SeparateRequest (
             "test",
             SeparateArgument (
@@ -350,23 +355,27 @@ class PopularMusicDialog : AppCompatActivity(), SeparateView {
                 text
             )
         )
+        // Call the Service function
         separateService.getSeparateLyrics(request, index, isFinished)
     }
-    // 형태소 분석 결과 받아오는 인터페이스 내 함수
+    // Runs when getSeparateLyrics is success
     override fun onGetLyricsSuccess(result: ArrayList<MorpResult>, index: Int, isFinished: Int) {
         var separateWord = ArrayList<String>()
+        // Get only main word in a sentence
         for (i in result){
+            // Noun
             if(i.type.slice(IntRange(0,0)) == "N"){
                 separateWord.add(i.text)
             }
+            // Verb
             else if(i.type.slice(IntRange(0,0)) == "V"){
                 separateWord.add(i.text+"다")
             }
         }
-        // API 호출이 완료되었을 때, 단어를 하나씩 저장한다
+        // Store the words in object
         initWords(separateWord, index, isFinished)
     }
-    // 각 단어들의 뜻과 발음 불러와서 객체에 저장
+    // Get each word's meaning and pronunciation
     private fun initWords(separateWord: ArrayList<String>, linenum: Int, isFinished: Int){
         var wordIndex = 0
         nowSentence++

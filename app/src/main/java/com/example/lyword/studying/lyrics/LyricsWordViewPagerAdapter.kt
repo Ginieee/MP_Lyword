@@ -16,7 +16,7 @@ class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : Recyc
             binding.dialogPronTv.text = word.wordPronunciation
             binding.dialogMeanTv.text = word.wordEnglish
         }
-
+        // Show default screen
         fun emptyInit() {
             binding.dialogLyricsCl.visibility = View.INVISIBLE
             binding.dialogLyricsDefaultIv.visibility = View.VISIBLE
@@ -35,13 +35,13 @@ class LyricsWordViewPagerAdapter(private var wordList: List<WordEntity>) : Recyc
         holder: ViewHolder,
         position: Int
     ) {
+        // If there is no word in selected sentence, show default screen
         if(wordList[0].wordOrigin == "0"){
             holder.emptyInit()
         } else {
             holder.bind(wordList[position])
         }
-
-        // 종료 버튼
+        // Exit button
         holder.binding.dialogLyricsCloseIv.setOnClickListener {
             (holder.binding.dialogLyricsCloseIv.context as Activity).finish()
         }

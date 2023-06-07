@@ -32,11 +32,14 @@ class StudyingFragment : Fragment() {
         return binding.root
     }
 
+    // Initialize Study RecyclerView
     @OptIn(DelicateCoroutinesApi::class)
     private suspend fun initRV(){
         withContext(Dispatchers.IO) {
+            // Get Study information
             val songs = db.studyDao.getInProgressStudies() as ArrayList<StudyEntity>
             withContext(Dispatchers.Main) {
+                // Set RecyclerView
                 val rvAdapter = StudyingSongRVAdapter(songs, requireContext())
                 binding.studyRecordRv.adapter = rvAdapter
                 binding.studyRecordRv.layoutManager =

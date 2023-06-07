@@ -13,9 +13,9 @@ class SeparateService {
         this.separateView = separateView
     }
 
+    // Call the Morpheme split API
     fun getSeparateLyrics(separateRequest: SeparateRequest, index: Int, isFinished: Int) {
         val separateService = getSeparateRetrofit().create(SeparateRetroInterface::class.java)
-        Log.d("hi", separateRequest.toString())
         var resMorp = ArrayList<MorpResult>()
         separateService.getSeparateList(separateRequest).enqueue(object : retrofit2.Callback<SeparateResponse> {
             override fun onResponse(
@@ -26,11 +26,13 @@ class SeparateService {
                 val resp : SeparateResponse? = response.body()
                 Log.d("separate/success/resp", resp.toString())
                 if (resp != null) {
+                    // Get the result and store it in the list
                     val respToSentence: List<SentenceResult> = resp.returnObject.sentenceResult
-
+                    // Get only Morpheme result
                     for (sentence in respToSentence){
                         resMorp.addAll(sentence.morpList)
                     }
+                    // Call onGetLyrics if success
                     separateView.onGetLyricsSuccess(resMorp, index, isFinished)
                 }
             }
