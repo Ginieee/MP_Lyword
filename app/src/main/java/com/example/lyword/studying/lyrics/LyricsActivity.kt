@@ -38,7 +38,7 @@ class LyricsActivity : AppCompatActivity() {
         youTubePlayerView = binding.lyricsYoutubePlayerView
         setYoutubeListener()
 
-        // Viewpager 세팅
+        // Viewpager Settings
         val lyricsAdapter = LyricsViewpagerAdapter(this, studyId)
         val menu = arrayListOf("Study", "Quiz")
         binding.lyricsContentVp.adapter = lyricsAdapter

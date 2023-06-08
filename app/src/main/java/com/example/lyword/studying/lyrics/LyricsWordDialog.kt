@@ -13,7 +13,6 @@ import com.example.lyword.data.LywordDatabase
 import com.example.lyword.databinding.DialogLyricsWordBinding
 import com.example.lyword.data.dao.WordDao
 import com.example.lyword.data.entity.WordEntity
-import com.example.lyword.studying.Word
 import kotlinx.coroutines.*
 
 class LyricsWordDialog : AppCompatActivity() {
@@ -30,18 +29,6 @@ class LyricsWordDialog : AppCompatActivity() {
 
         var lyricsPosition = intent.getLongExtra("lyricsPosition", -1)
         Log.d("lyricsWordDialog", lyricsPosition.toString())
-
-//        // 액티비티 크기 세팅하기
-//        // 화면 가로 크기 구하기
-//        val displayMetrics = DisplayMetrics()
-//        windowManager.defaultDisplay.getMetrics(displayMetrics)
-//        val screenWidth = displayMetrics.widthPixels
-//        // 액티비티 크기 설정
-//        val layoutParams = window.attributes
-//        val wid = (screenWidth * 0.95).toInt()
-//        layoutParams.width = wid
-//        layoutParams.height = wid
-//        window.attributes = layoutParams
 
         // 다이얼로그 안의 Viewpager(+Recyclerview) 세팅 함수
         initVP(lyricsPosition)
@@ -64,9 +51,5 @@ class LyricsWordDialog : AppCompatActivity() {
                 binding.dialogLyricsVp.orientation = ViewPager2.ORIENTATION_HORIZONTAL
             }
         }
-    }
-
-    private suspend fun getWordListFromDatabase(): List<WordEntity> = withContext(Dispatchers.IO) {
-        wordDao.getWord()
     }
 }

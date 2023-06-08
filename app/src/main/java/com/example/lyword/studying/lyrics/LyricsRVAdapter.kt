@@ -32,14 +32,14 @@ class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Co
                 setTextColorDefault()
             }
         }
-        // 선택된 position에 대한 설정
+        // Selected position - set text color and show the button
         private fun setTextColorSelected() {
             binding.itemLyricsLyTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsPronTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsTransTv.setTextColor(ContextCompat.getColor(context, R.color.lyricsHighlight))
             binding.itemLyricsStartIv.visibility = View.VISIBLE
         }
-        // 그 외의 position 값들은 전부 기본 세팅
+        // Other position(not selected) - set text color and hide the button
         private fun setTextColorDefault() {
             binding.itemLyricsLyTv.setTextColor(ContextCompat.getColor(context, R.color.black))
             binding.itemLyricsPronTv.setTextColor(ContextCompat.getColor(context, R.color.black))
@@ -47,6 +47,7 @@ class LyricsRVAdapter(var lyricsList: ArrayList<SentenceEntity>, var context: Co
             binding.itemLyricsStartIv.visibility = View.INVISIBLE
         }
 
+        // Start the activity (Word)
         fun startDialog(lyrics: SentenceEntity) {
             val intent = Intent(context, LyricsWordDialog::class.java)
             intent.putExtra("lyricsPosition", lyrics.sentenceId)

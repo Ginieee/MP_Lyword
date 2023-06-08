@@ -21,13 +21,6 @@ data class MorpResult(
     @SerializedName(value = "type") val type : String
 )
 
-data class Separate(
-    @SerializedName(value = "id") val id : Int,
-    @SerializedName(value = "text") val text : String,
-    @SerializedName(value = "begin") val begin : Int,
-    @SerializedName(value = "end") val end : Int
-)
-
 data class SeparateRequest(
     val requestId : String,
     val argument : SeparateArgument

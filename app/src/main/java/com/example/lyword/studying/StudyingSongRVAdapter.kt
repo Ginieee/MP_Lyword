@@ -16,7 +16,6 @@ import com.example.lyword.databinding.ItemStudyingSongBinding
 
 class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: Context): RecyclerView.Adapter<StudyingSongRVAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(val binding: ItemStudyingSongBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(songs: StudyEntity) {
             binding.studyingItemSongIv.text = songs.title
@@ -31,11 +30,10 @@ class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: C
                 .fallback(R.drawable.ic_logo_splash)
                 .transform(CenterCrop(), RoundedCorners(10))
                 .into(binding.studyingItemAlbumIv)
-            //binding.studyingItemLoaderIv.setImageResource(songs.progress)
         }
 
         fun setLyrics(songs: StudyEntity) {
-            // 해당 Recyclerview의 데이터 넣어서 LyricsActivity 띄우기
+            // Show LyricsActivity with this position's data
             val intent = Intent(context, LyricsActivity::class.java)
             intent.putExtra("studyId", songs.studyId)
             (context as Activity).startActivityForResult(intent,101)
@@ -52,7 +50,7 @@ class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: C
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(songList[position])
 
-        // 해당 노래 학습 시작하기
+        // Start the study
         holder.binding.studyingItemStartBtn.setOnClickListener {
             holder.setLyrics(songList[position])
         }
@@ -62,6 +60,7 @@ class StudyingSongRVAdapter(var songList: ArrayList<StudyEntity>, var context: C
         return songList.size
     }
 
+    // Set percent images
     fun matchPercent(percent : Int) : Int {
         return when (percent) {
             0 -> R.drawable.loader_0
